@@ -37,6 +37,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('admin/link/add','LinkContorller@add')->name('admin.linkadd');
         Route::post('admin/link/remove','LinkContorller@remove')->name('admin.linkremove');
         Route::post('admin/link/index','LinkContorller@index')->name('admin.linkindex');
+        Route::post('admin/link/update','LinkContorller@update')->name('admin.linkupdate');
     });
 
 });

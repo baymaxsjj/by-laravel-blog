@@ -29,6 +29,13 @@ class LinkRequest extends FormRequest
                 return [
                     'id'=>['required']
                 ];
+            case '/api/v1/admin/link/update':
+                return [
+                    'id'=>['required'],
+                    'name'=>['required','max:20'],
+                    'link'=>['required'],
+                    'info'=>['required','between:5,50'],
+                ];
             
         }
     }

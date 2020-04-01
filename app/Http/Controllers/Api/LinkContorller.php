@@ -8,6 +8,9 @@ use App\Http\Requests\Api\LinkRequest;
 
 class LinkContorller extends Controller
 {   
+    // 待添加功能
+    // 一个用户只能添加一次
+    // 用户上传图片未进行保存
     public function index(Request $request){
        
         if(empty($request->has('apply'))){
@@ -55,6 +58,15 @@ class LinkContorller extends Controller
             return $this->failed('移除失败');
         }
         return $this->success('移除成功');
+    }
+    public function update(LinkRequest $request){
+        $id=$request->input('id');
+        $link=Link::find($id);
+        $boo=$link->update($request->all());
+        if(!$boo){
+            return $this->failed('修改失败');
+        }
+        return $this->success('修改成功');
     }
 
 }
