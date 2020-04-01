@@ -27,12 +27,16 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('/user/info','UserController@userinfo')->name('users.info');
         Route::post('/user/logout','UserController@logout')->name('users.logout');
         Route::post('/user/modify','UserController@modify')->name('users.modify');
+        Route::post('user/link/apply','LinkContorller@apply')->name('users.link');
     });
 
     // 管理员登录
     Route::post('/admin/login','AdminController@login')->name('users.adminlogin');
     Route::middleware('api.adminlogin')->group(function () {
         Route::post('/admin/userlist','AdminController@userlist')->name('users.userlist');
+        Route::post('admin/link/add','LinkContorller@add')->name('admin.linkadd');
+        Route::post('admin/link/remove','LinkContorller@remove')->name('admin.linkremove');
+        Route::post('admin/link/index','LinkContorller@index')->name('admin.linkindex');
     });
 
 });
