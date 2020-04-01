@@ -17,8 +17,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
-    Route::get('/users','UserController@index')->name('users.index');
-    Route::get('/users/{user}','UserController@show')->name('users.show');
-    Route::post('/users','UserController@store')->name('users.store');
+    // 登录
     Route::post('/login','UserController@login')->name('users.login');
+    // 注册
+    Route::post('/sign','UserController@sign')->name('users.sign');
+    // 登陆后操作
+    Route::middleware('api.refresh')->group(function () {
+        // 个人用户信息
+        Route::post('/user/info','UserController@userinfo')->name('users.info');
+        Route::post('/user/logout','UserController@logout')->name('users.logout');
+        Route::post('/user/modify','UserController@modify')->name('users.modify');
+    });
+
+    // 管理员登录
+    Route::post('/admin/login','AdminController@login')->name('users.adminlogin');
+    Route::middleware('api.adminlogin')->group(function () {
+        Route::post('/admin/userlist','AdminController@userlist')->name('users.userlist');
+    });
+
 });
