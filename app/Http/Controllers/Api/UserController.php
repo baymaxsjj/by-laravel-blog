@@ -54,14 +54,13 @@ class UserController extends Controller
       return $this->success($user);
   }
   public function modify(UserRequest $request){
+        if(!empty($request->has('name'))||!empty($request->has('is_admin'))){
+            return $this->failed('权限不够',400);
+        }
         $userAuth=Auth::guard('api')->user();
         $user=User::find($userAuth->id);
-        $user->update($request);
+        $user->update($request->all());
         return $this->success('修改成功');
   }
-// 发表评论
-  public function comment(){
-
-  }
-
+  
 }
