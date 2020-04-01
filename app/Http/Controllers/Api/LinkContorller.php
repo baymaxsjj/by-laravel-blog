@@ -11,6 +11,7 @@ class LinkContorller extends Controller
     // 待添加功能
     // 一个用户只能添加一次
     // 用户上传图片未进行保存
+    // 可传入申请和为申请列表，0，1
     public function index(Request $request){
        
         if(empty($request->has('apply'))){
