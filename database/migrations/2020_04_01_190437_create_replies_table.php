@@ -13,7 +13,7 @@ class CreateRepliesTable extends Migration
      */
     public function up()
     {
-        Schema::create('reply', function (Blueprint $table) {
+        Schema::create('replies', function (Blueprint $table) {
             $table->increments('id');
             $table->text('reply')->comment('回复内容');
             $table->integer('mess_id')->comment('回复留言id');
