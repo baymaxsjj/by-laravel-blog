@@ -30,10 +30,9 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         // 友情链接
         Route::post('user/link/apply','LinkContorller@apply')->name('users.link');
         // 留言
-        Route::post('user/message/add','MessageController@add')->name('users.Message');
-
-
-
+        Route::post('user/message/add','MessageController@add')->name('users.messageadd');
+        // 评论
+        Route::post('user/reply/add','replyController@add')->name('users.replyadd');
     });
 
     // 管理员登录
@@ -47,7 +46,9 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('admin/link/index','LinkContorller@index')->name('admin.linkindex');
         Route::post('admin/link/update','LinkContorller@update')->name('admin.linkupdate');
         // 留言删除
-        Route::post('admin/message/remove','MessageController@remove')->name('admin.messagedelete');
+        Route::post('admin/message/remove','MessageController@remove')->name('admin.messageremove');
+        // 评论删除
+        Route::post('admin/reply/remove','replyController@remove')->name('admin.replyremove');
     });
 
 });

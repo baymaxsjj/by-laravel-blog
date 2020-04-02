@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 class MessageController extends Controller
 {
     //留言添加
+    // 必填 message
+    // 可选 article_id
     public function add(Request $request){
         $userAuth = Auth::guard('api')->user();
         $content=$request->input('message');
@@ -22,6 +24,7 @@ class MessageController extends Controller
         return $this->success('留言成功'. $content);
     }
     // 留言删除
+    // 必填 id
     public function remove(Request $request){
         $id=$request->input('id');
         $boo=Message::findOrFail($id)->delete();

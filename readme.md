@@ -1,7 +1,7 @@
 ## 数据库迁移
 1. php artisan migrate
 ## 数据库填充
-1.php artisan make:factory Linkfactory创建工厂
+1. php artisan make:factory Linkfactory创建工厂
 2. composer dump-autoload 
 3. php artisan make:seeder LinkTableSeeder    
 4. php artisan db:seed填充数据
