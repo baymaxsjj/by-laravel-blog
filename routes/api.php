@@ -49,6 +49,10 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('admin/message/remove','MessageController@remove')->name('admin.messageremove');
         // 评论删除
         Route::post('admin/reply/remove','replyController@remove')->name('admin.replyremove');
+        // 标签添加
+        Route::post('admin/label/add','LabelController@add')->name('admin.labeladd');
+        Route::post('admin/label/remove','LabelController@remove')->name('admin.labelremove');
+
     });
 
 });

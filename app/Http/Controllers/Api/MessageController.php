@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Requests\Api\MessageRequest;
 class MessageController extends Controller
 {
     //留言添加
     // 必填 message
     // 可选 article_id
-    public function add(Request $request){
+    public function add(MessageRequest $request){
         $userAuth = Auth::guard('api')->user();
         $content=$request->input('message');
         $message=new Message();
@@ -25,7 +25,7 @@ class MessageController extends Controller
     }
     // 留言删除
     // 必填 id
-    public function remove(Request $request){
+    public function remove(MessageRequest $request){
         $id=$request->input('id');
         $boo=Message::findOrFail($id)->delete();
         if($boo){
