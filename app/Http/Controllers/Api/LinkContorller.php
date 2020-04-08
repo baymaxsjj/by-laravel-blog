@@ -7,23 +7,28 @@ use App\Models\Link;
 use App\Http\Requests\Api\LinkRequest;
 
 class LinkContorller extends Controller
-{   
+{
     // 待添加功能
     // 一个用户只能添加一次
     // 用户上传图片未进行保存
     // 可传入申请和为申请列表，0，1
+    // 申请列表
     public function index(Request $request){
-       
+
         if(empty($request->has('apply'))){
             $link=Link::paginate(5);
             return $this->success($link);
         }else{
-            $link=link::where('apply',$request->input('apply'))->paginate(5);;
+            $link=Link::where('apply',$request->input('apply'))->paginate(5);;
             return $this->success($link);
         }
         // return $this->success($request->input('apply'));
-        
     }
+    public function list(){
+        $links=Link::where('apply','1')->get();
+        return $this->success($links);
+    }
+
     //user 申请添加友情链接
     public function apply(LinkRequest $request){
         $link=new Link();
@@ -41,7 +46,7 @@ class LinkContorller extends Controller
     //admin 添加友情链接
     public function add(LinkRequest $request){
         $id=$request->input('id');
-        
+
         $link=Link::find($id);
         $boo=$link->update(['apply'=>1]);
         if(!$boo){
@@ -52,7 +57,7 @@ class LinkContorller extends Controller
     //admin  移除友情链接
     public function remove(LinkRequest $request){
         $id=$request->input('id');
-        
+
         $link=Link::find($id);
         $boo=$link->update(['apply'=>0]);
         if(!$boo){

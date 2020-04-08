@@ -12,7 +12,7 @@ class ReplyRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {   
+    {
         switch (FormRequest::getPathInfo()){
             case '/api/v1/user/reply/add':
                 return [
@@ -20,6 +20,10 @@ class ReplyRequest extends FormRequest
                     'mess_id'=>['required']
                 ];
             case '/api/v1/admin/reply/remove':
+                return [
+                    'id'=>['required']
+                ];
+            case '/api/v1/reply/list':
                 return [
                     'id'=>['required']
                 ];

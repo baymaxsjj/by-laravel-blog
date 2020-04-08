@@ -5,18 +5,19 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reply;
-
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Api\ReplyRequest;
 class ReplyController extends Controller
 {
     // 评论回复逻辑
-    //SELECT * FROM `messages` m  LEFT JOIN replies r on m.id=r.mess_id where m.`article_id`=0  
+    //SELECT * FROM `messages` m  LEFT JOIN replies r on m.id=r.mess_id where m.`article_id`=0
     // ORDER BY `m`.`id`  DESC
     //
     // 用户添加留言可接受参数
     //      评论内容    留言id
     // 必填 reply   mess_id
     // 可选 user_id 评论用户id
-    public function add(Request $request){
+    public function add(ReplyRequest $request){
         $reply=$request->input('reply');
         $mess_id=$request->input('mess_id');
         $userAuth = Auth::guard('api')->user();
@@ -31,12 +32,22 @@ class ReplyController extends Controller
         $re->save();
         return $this->success('留言成功'.$reply);
     }
-    public function remove(Request $request){
+    public function remove(ReplyRequest $request){
         $id=$request->input('id');
         $boo=Reply::findOrFail($id)->delete();
         if($boo){
             return $this->success('删除成功');
         }
         return $this->failed('删除失败,可能已经删除了！');
+    }
+    public function list(ReplyRequest $request){
+        $id=$request->input('id');
+        $list=DB::table('replies')
+            ->join('users','replies.user_id','=','users.id')
+            ->where('mess_id',$id)
+            ->select('replies.id','replies.reply','replies.created_at','users.name','users.avatar_url')
+            ->get();
+            // ->paginate(3);
+        return $this->success($list);
     }
 }

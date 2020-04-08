@@ -21,6 +21,11 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::post('/login','UserController@login')->name('users.login');
     // 注册
     Route::post('/sign','UserController@sign')->name('users.sign');
+    // 获取友情链接
+    Route::get('/link/list','LinkContorller@list')->name('users.link');
+    // 获取留言
+    Route::get('/message/list','MessageController@list')->name('users.message');
+    Route::get('/reply/list','ReplyController@list')->name('users.reply');
     // 登陆后操作
     Route::middleware('api.refresh')->group(function () {
         // 个人用户信息

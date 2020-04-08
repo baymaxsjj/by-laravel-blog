@@ -12,14 +12,17 @@ class MessageRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {   
+    {
         switch (FormRequest::getPathInfo()){
             case '/api/v1/user/message/add':
                 return [
                     'message'=>['required','between:5,50'],
-                    'article_id'=>['required']
                 ];
             case '/api/v1/admin/message/remove':
+                return [
+                    'id'=>['required']
+                ];
+            case '/api/v1/message/list':
                 return [
                     'id'=>['required']
                 ];
