@@ -25,7 +25,10 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/link/list','LinkContorller@list')->name('users.link');
     // 获取留言
     Route::get('/message/list','MessageController@list')->name('users.message');
+    // 获取评论 (id)
     Route::get('/reply/list','ReplyController@list')->name('users.reply');
+    // 获取成长信息
+    Route::get('/route/list','RouteController@list')->name('users.route');
     // 登陆后操作
     Route::middleware('api.refresh')->group(function () {
         // 个人用户信息
