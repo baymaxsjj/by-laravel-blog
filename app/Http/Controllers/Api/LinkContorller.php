@@ -19,7 +19,7 @@ class LinkContorller extends Controller
             $link=Link::paginate(5);
             return $this->success($link);
         }else{
-            $link=Link::where('apply',$request->input('apply'))->paginate(5);;
+            $link=Link::where('apply',$request->get('apply'))->paginate(5);;
             return $this->success($link);
         }
         // return $this->success($request->input('apply'));
@@ -41,38 +41,28 @@ class LinkContorller extends Controller
             return $this->failed('申请失败');
         }
         return $this->success('申请成功,等待管理员添加');
-
     }
     //admin 添加友情链接
-    public function add(LinkRequest $request){
-        $id=$request->input('id');
-
-        $link=Link::find($id);
-        $boo=$link->update(['apply'=>1]);
-        if(!$boo){
-            return $this->failed('添加失败');
-        }
-        return $this->success('添加成功');
-    }
     //admin  移除友情链接
     public function remove(LinkRequest $request){
         $id=$request->input('id');
-
         $link=Link::find($id);
-        $boo=$link->update(['apply'=>0]);
-        if(!$boo){
-            return $this->failed('移除失败');
+        if(empty($link->apply)){
+            $boo=$link->update(['apply'=>1]);
+            return $this->message('添加成功');
+        }else{
+            $boo=$link->update(['apply'=>0]);
+            return $this->message('移除成功');
         }
-        return $this->success('移除成功');
     }
     public function update(LinkRequest $request){
         $id=$request->input('id');
         $link=Link::find($id);
         $boo=$link->update($request->all());
         if(!$boo){
-            return $this->failed('修改失败');
+            return $this->message('修改失败');
         }
-        return $this->success('修改成功');
+        return $this->message('修改成功');
     }
 
 }

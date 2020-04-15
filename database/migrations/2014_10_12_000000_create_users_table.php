@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->integer('captcha')->nullable()->comment('验证码');
             $table->text('intro')->nullable()->comment('介绍');
             $table->string('is_admin')->nullable()->comment('是否为管理员');
+            $table->softDeletes();
             $table->timestamps();
             // $table->increments('id');
             // $table->string('name');

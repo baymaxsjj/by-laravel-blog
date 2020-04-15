@@ -30,7 +30,7 @@ class UserController extends Controller
         //时间不对更改时区 在/config/app.php 'timezone' => 'Asia/Shanghai',更新登录时间
         $user->update([$user->updated_at = time()]);
         // 返回token
-        
+
         return $this->success(['token' => 'bearer '. $token]);
     }
     return $this->failed('账号或密码错误',400);
@@ -62,5 +62,20 @@ class UserController extends Controller
         $user->update($request->all());
         return $this->success('修改成功');
   }
-  
+  public function remove(UserRequest $request){
+        $id=$request->get('id');
+        $user=User::withTrashed()->find($id);
+        if(empty($user->deleted_at)){
+            $boo=User::find($id)->delete();
+            return $this->message('冻结成功');
+        }else{
+            $boo=User::withTrashed()->find($id)->restore();
+            return $this->message('解冻成功');
+        }
+  }
+ // 获取用户列表
+    public function list(){
+        $users = User::withTrashed()->where('is_admin',0)->paginate(5);
+        return $this->success($users);
+    }
 }

@@ -24,6 +24,13 @@ class RouteRequest extends FormRequest
                 return [
                     'id'=>['required']
                 ];
+            case '/api/v1/admin/route/update':
+                return [
+                    'id'=>['required'],
+                    'data'=>['required','between:5,30'],
+                    'category'=>['required','between:5,30'],
+                    'content'=>['required','between:5,100']
+                ];
 
         }
     }

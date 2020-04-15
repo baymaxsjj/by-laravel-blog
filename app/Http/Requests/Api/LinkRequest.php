@@ -21,10 +21,6 @@ class LinkRequest extends FormRequest
                     'info'=>['required','between:5,50'],
                     'imgUrl'=>['required']
                 ];
-            case '/api/v1/admin/link/add':
-                return [
-                    'id'=>['required']
-                ];
             case '/api/v1/admin/link/remove':
                 return [
                     'id'=>['required']

@@ -20,10 +20,11 @@ class AdminLoginMiddleware  extends BaseMiddleware
      * @return mixed
      */
     public function handle($request, Closure $next)
-    {   
+    {
         $userAuth = Auth::guard('api')->user();
         if(empty($userAuth)){
-            return redirect('/');
+            // return redirect('/');
+            abort(403,'对不起，您还未登录！');
         }
         $user=User::where('name', $userAuth->name)->first();
         if($user->is_admin==1){
@@ -50,8 +51,7 @@ class AdminLoginMiddleware  extends BaseMiddleware
            // 在响应头中返回新的 token
            return $this->setAuthenticationHeader($next($request), $token);
        }else{
-            return redirect('/');
+            abort(403,'对不起，您无权访问该页面！');
        }
     }
 }
-

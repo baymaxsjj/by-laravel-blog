@@ -40,6 +40,10 @@ class UserRequest extends FormRequest
                     'password'=>['between:6,20'],
                     'intro'=>['between:10,50']
                 ];
+            case '/api/v1/admin/user/remove':
+                return [
+                    'id'=>['required']
+                ];
                 
         }
     }

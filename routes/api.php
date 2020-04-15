@@ -28,7 +28,13 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     // 获取评论 (id)
     Route::get('/reply/list','ReplyController@list')->name('users.reply');
     // 获取成长信息
-    Route::get('/route/list','RouteController@list')->name('users.route');
+    Route::get('/route/list','RouteController@userList')->name('users.route');
+    // 获取文章列表
+    Route::post('/blog/list','ArticleController@list')->name('users.articlelist');
+    // 获取标签列表
+    Route::post('/label/list','LabelController@list')->name('users.labellist');
+    // 获取文章内容
+    Route::post('/blog/content','ArticleController@content')->name('users.articlecontent');
     // 登陆后操作
     Route::middleware('api.refresh')->group(function () {
         // 个人用户信息
@@ -47,12 +53,24 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::post('/admin/login','AdminController@login')->name('users.adminlogin');
     Route::middleware('api.adminlogin')->group(function () {
         // 用户列表可传 0，或1，
-        Route::post('/admin/userlist','AdminController@userlist')->name('users.userlist');
+        Route::post('/admin/user/list','UserController@list')->name('users.userlist');
+        Route::post('/admin/user/remove','UserController@remove');
+        // 发表文章
+        Route::post('/admin/article/add','ArticleController@add');
+        // 删除文章
+        Route::post('/admin/article/remove','ArticleController@remove');
         // 友情链接操作
-        Route::post('admin/link/add','LinkContorller@add')->name('admin.linkadd');
         Route::post('admin/link/remove','LinkContorller@remove')->name('admin.linkremove');
-        Route::post('admin/link/index','LinkContorller@index')->name('admin.linkindex');
+        Route::post('admin/link/list','LinkContorller@index')->name('admin.linkindex');
         Route::post('admin/link/update','LinkContorller@update')->name('admin.linkupdate');
+
+        // 成长路线
+
+        Route::post('admin/route/remove','RouteController@remove');
+        Route::post('admin/route/add','RouteController@add');
+        Route::get('admin/route/list','RouteController@list');
+        Route::post('admin/route/update','RouteController@update');
+
         // 留言删除
         Route::post('admin/message/remove','MessageController@remove')->name('admin.messageremove');
         // 评论删除

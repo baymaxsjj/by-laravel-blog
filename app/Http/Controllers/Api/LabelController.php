@@ -27,4 +27,14 @@ class LabelController extends Controller
         }
         return $this->failed('删除失败,可能已经删除了！');
     }
+    public function list(){
+        $labels=Label::select('label')->get();
+        $lab=[];
+        foreach($labels as $label){
+            $item=$label->label;
+            array_push($lab,$item);
+        }
+        $lab=array_unique($lab);
+        return $this->success($lab);
+    }
 }

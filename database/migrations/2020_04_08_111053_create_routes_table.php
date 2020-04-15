@@ -18,6 +18,7 @@ class CreateRoutesTable extends Migration
 			$table->string('data',30)->comment('日期');
 			$table->string('category',30)->comment('类别');
 			$table->string('content',100)->comment('内容');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

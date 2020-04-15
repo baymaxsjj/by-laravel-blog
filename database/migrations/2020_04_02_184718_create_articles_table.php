@@ -21,7 +21,7 @@ class CreateArticlesTable extends Migration
             $table->text('img')->nullable()->comment('封面');
             $table->string('classty')->nullable()->default('前端')->comment('分类');
             $table->string('name')->comment('作者');
-            $table->integer('label_id')->comment('标签id');
+            // $table->integer('label_id')->comment('标签id');
             $table->integer('click')->default(0)->comment('浏览量');
             $table->integer('like')->default(0)->comment('喜欢量');
             $table->softDeletes();

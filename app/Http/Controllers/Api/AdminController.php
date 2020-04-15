@@ -37,9 +37,6 @@ class AdminController extends Controller
         }
         return $this->failed('非管理员账号',400);
     }
-    // 获取用户列表
-    public function userlist(){
-        $users = User::where('is_admin',0)->paginate(5);
-        return $this->success($users);
-    }
+   
+  
 }

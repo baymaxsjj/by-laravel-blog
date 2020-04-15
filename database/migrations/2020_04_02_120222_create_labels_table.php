@@ -16,7 +16,8 @@ class CreateLabelsTable extends Migration
         Schema::create('labels', function (Blueprint $table) {
             $table->increments('id');
             $table->string('label')->comment('标签名');
-            $table->integer('user_id')->comment('创建者');
+            // $table->integer('user_id')->comment('创建者');//为
+            $table->integer('article_id')-comment('文章id')
             $table->timestamps();
         });
     }
