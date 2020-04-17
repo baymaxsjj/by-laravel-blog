@@ -52,6 +52,10 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     // 管理员登录
     Route::post('/admin/login','AdminController@login')->name('users.adminlogin');
     Route::middleware('api.adminlogin')->group(function () {
+        // 获取管理员信息
+        Route::get('/admin/info','AdminController@info');
+        // 修改管理信息
+        Route::post('/admin/update','AdminController@update');
         // 用户列表可传 0，或1，
         Route::post('/admin/user/list','UserController@list')->name('users.userlist');
         Route::post('/admin/user/remove','UserController@remove');
@@ -73,8 +77,11 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
 
         // 留言删除
         Route::post('admin/message/remove','MessageController@remove')->name('admin.messageremove');
+        Route::get('admin/message/alist','MessageController@alist');
         // 评论删除
         Route::post('admin/reply/remove','replyController@remove')->name('admin.replyremove');
+        Route::get('admin/reply/alist','replyController@alist');
+
         // 标签添加
         Route::post('admin/label/add','LabelController@add')->name('admin.labeladd');
         Route::post('admin/label/remove','LabelController@remove')->name('admin.labelremove');

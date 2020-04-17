@@ -27,6 +27,10 @@ class ReplyRequest extends FormRequest
                 return [
                     'id'=>['required']
                 ];
+            case '/api/v1/admin/reply/alist':
+                return [
+                    'id'=>['required']
+                ];
         }
     }
     public function message(){

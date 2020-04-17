@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     //
@@ -30,13 +31,38 @@ class AdminController extends Controller
                 //时间不对更改时区 在/config/app.php 'timezone' => 'Asia/Shanghai',更新登录时间
                 $user->update([$user->updated_at = time()]);
                 // 返回token
-                
+
                 return $this->success(['token' => 'bearer '. $token]);
             }
             return $this->failed('账号或密码错误',400);
         }
         return $this->failed('非管理员账号',400);
     }
-   
-  
+    public function info(){
+        $userAuth = Auth::guard('api')->user();
+        // 在数据库中查找用户信息$
+        $data=['name','phone','email','avatar_url'];
+        $user = User::select($data)->find($userAuth->id);
+        return $this->success($user);
+    }
+    public function update(UserRequest $request){
+        $userAuth = Auth::guard('api')->user();
+        $user = DB::table('users')->where('id',$userAuth->id)->first();
+        if(Hash::check($request->get('password'),$user->password)){
+            $pass=$request->get('pass');
+            $info=$request->all();
+            if(is_null($pass)){
+                unset($info['password']);
+            }else{
+                $info['password']=$info['pass'];
+                unset($info['pass']);
+            }
+            $use = User::find($userAuth->id);
+            $use->update($info);
+            return $this->message('修改成功');
+        }else{
+            return $this->message('密码不正确');
+        }
+    }
+
 }

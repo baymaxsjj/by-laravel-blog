@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Message;
+use App\Models\Reply;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Api\MessageRequest;
 use Illuminate\Support\Facades\DB;
@@ -27,12 +28,15 @@ class MessageController extends Controller
     // 留言删除
     // 必填 id
     public function remove(MessageRequest $request){
-        $id=$request->input('id');
-        $boo=Message::findOrFail($id)->delete();
-        if($boo){
-            return $this->success('删除成功');
+        $id=$request->get('id');
+        $message=Message::withTrashed()->find($id);
+        if( is_null($message->deleted_at)){
+            $boo=Message::find($id)->delete();
+            return $this->message('添加成功');
+        }else{
+            $boo=Message::withTrashed()->find($id)->restore();
+            return $this->message('移除成功');
         }
-        return $this->failed('删除失败,可能已经删除了！');
     }
     public function list(MessageRequest $request){
         $id=$request->input('id');
@@ -43,7 +47,16 @@ class MessageController extends Controller
             ->join('users','messages.user_id','=','users.id')
             ->where('article_id',$id)
             ->select('messages.id','messages.message','messages.created_at','users.name','users.avatar_url')->paginate(3);
-       
         return $this->success($list);
+    }
+    public function alist(Request $request){
+        $message=Message::withTrashed()->orderBy('created_at','desc')->paginate(5);
+        foreach($message as $item){
+            $reply=Reply::withTrashed()->where('mess_id',$item->id)->count();
+            if($reply){
+                $item->hasChildren = true;
+            }
+        }
+        return $this->success($message);
     }
 }

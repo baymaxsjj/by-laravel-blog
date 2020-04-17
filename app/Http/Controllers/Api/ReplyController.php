@@ -30,15 +30,20 @@ class ReplyController extends Controller
         $re->user_id=$userAuth->id;
         $re->mess_id=$mess_id;
         $re->save();
-        return $this->success('留言成功'.$reply);
+        return $this->message('留言成功');
     }
+    // 删除为0，
     public function remove(ReplyRequest $request){
-        $id=$request->input('id');
-        $boo=Reply::findOrFail($id)->delete();
-        if($boo){
-            return $this->success('删除成功');
+        $id=$request->get('id');
+        $message=Reply::withTrashed()->find($id);
+        if($message->deleted_at==1){
+            $boo=Reply::find($id)->delete();
+            return $this->message('添加成功');
+        }else{
+            $boo=Reply::withTrashed()->find($id)->restore();
+            return $this->message('移除成功');
         }
-        return $this->failed('删除失败,可能已经删除了！');
+        // return $this->message($message->deleted_at);
     }
     public function list(ReplyRequest $request){
         $id=$request->input('id');
@@ -49,5 +54,10 @@ class ReplyController extends Controller
             ->get();
             // ->paginate(3);
         return $this->success($list);
+    }
+    public function alist(ReplyRequest $request){
+        $mess_id=$request->get('id');
+        $reply=Reply::withTrashed()->where('mess_id',$mess_id)->orderBy('created_at','desc')->get();
+        return $this->success($reply);
     }
 }

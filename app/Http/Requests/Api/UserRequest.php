@@ -33,6 +33,15 @@ class UserRequest extends FormRequest
                     'name'=>['required','max:16','exists:users,name'],
                     'password'=>['required','between:6,20']
                 ];
+            case '/api/v1/admin/update':
+                return [
+                    'name' => ['max:16','unique:users,name'],
+                    'email' => ['unique:users,email'],
+                    'password' => ['required','between:6,20'],
+                    'pass' => ['between:6,20'],
+                    'phone' => ['unique:users,phone'],
+                    'avatar_url'=>[ 'between:3,100'],
+                ];
             case '/api/v1/user/modify':
                 return [
                     'phone'=>['unique:users,phone'],
@@ -44,7 +53,7 @@ class UserRequest extends FormRequest
                 return [
                     'id'=>['required']
                 ];
-                
+
         }
     }
     public function messages()
@@ -64,7 +73,7 @@ class UserRequest extends FormRequest
             'new_password.required' => '新密码不能为空',
             'new_password.between' => '密码长度为6~20位之间',
             // 'password.max' => '密码长度不能超过32个字符',
-            // 'password.min' => '密码长度不能少于6个字符', 
+            // 'password.min' => '密码长度不能少于6个字符',
             'id.required'=>'id必须填写',
             'id.exists' => '用户id不存在'
         ];
