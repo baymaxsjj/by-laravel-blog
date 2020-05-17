@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Api\Helpers\ApiResponse;
@@ -10,6 +9,4 @@ class Controller extends BaseController
 
     use ApiResponse;
     // 其他通用的Api帮助函数
-    
 }
-?>

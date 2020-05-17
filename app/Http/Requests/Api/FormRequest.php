@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Requests\Api;
-
 use Illuminate\Foundation\Http\FormRequest as BaseFormRequest;
-// 验证器基类
+
 class FormRequest extends BaseFormRequest
 {
     /**
@@ -13,7 +12,7 @@ class FormRequest extends BaseFormRequest
      */
     public function authorize()
     {
-        //false代表权限验证不通过，返回403错误
+       //false代表权限验证不通过，返回403错误
         //true代表权限认证通过
         return true;
     }

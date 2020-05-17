@@ -2,7 +2,7 @@
 
 namespace App\Api\Helpers;
 
-use Exception;
+use Throwable;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Illuminate\Support\Arr;
 
 class ExceptionReport
 {
@@ -37,7 +38,7 @@ class ExceptionReport
      * @param Request $request
      * @param Exception $exception
      */
-    function __construct(Request $request, Exception $exception)
+    function __construct(Request $request, Throwable $exception)
     {
         $this->request = $request;
         $this->exception = $exception;
@@ -89,7 +90,7 @@ class ExceptionReport
      * @param Exception $e
      * @return static
      */
-    public static function make(Exception $e){
+    public static function make(Throwable $e){
 
         return new static(\request(),$e);
     }
@@ -99,8 +100,8 @@ class ExceptionReport
      */
     public function report(){
         if ($this->exception instanceof ValidationException){
-            $error = array_first($this->exception->errors());
-            return $this->failed(array_first($error),$this->exception->status);
+            $error = Arr::first($this->exception->errors());
+            return $this->failed(Arr::first($error),$this->exception->status);
         }
         $message = $this->doReport[$this->report];
         return $this->failed($message[0],$message[1]);

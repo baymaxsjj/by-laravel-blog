@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateUsersTable extends Migration
 {
@@ -23,9 +23,15 @@ class CreateUsersTable extends Migration
             $table->integer('captcha')->nullable()->comment('验证码');
             $table->text('intro')->nullable()->comment('介绍');
             $table->string('is_admin')->nullable()->comment('是否为管理员');
+            $table->softDeletes();
             $table->timestamps();
-            // unique 唯一
-            // nullable 可以为空
+            // $table->increments('id');
+            // $table->string('name');
+            // $table->string('email')->unique();
+            // $table->timestamp('email_verified_at')->nullable();
+            // $table->string('password');
+            // $table->rememberToken();
+            // $table->timestamps();
         });
     }
 
