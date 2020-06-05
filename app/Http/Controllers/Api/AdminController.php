@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
-    //
+    /**
+     * A    管理员登录
+     */
     public function login(UserRequest $request){
         $name=$request->input('name');
         $user=User::where('name',$name)->first();
@@ -38,13 +40,19 @@ class AdminController extends Controller
         }
         return $this->failed('非管理员账号',400);
     }
+    /**
+     * U    用户信息
+     */
     public function info(){
         $userAuth = Auth::guard('api')->user();
         // 在数据库中查找用户信息$
-        $data=['name','phone','email','avatar_url'];
+        $data=['name','phone','email','avatar_url','updated_at'];
         $user = User::select($data)->find($userAuth->id);
         return $this->success($user);
     }
+    /**
+     * U    用户信息更新
+     */
     public function update(UserRequest $request){
         $userAuth = Auth::guard('api')->user();
         $user = DB::table('users')->where('id',$userAuth->id)->first();

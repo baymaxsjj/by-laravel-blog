@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Redis;
 class Article extends Model
 {
     use SoftDeletes;
@@ -22,4 +23,8 @@ class Article extends Model
         $vlaue=is_null($vlaue)?1:0;
         return $vlaue;
     }
+     public function visits()
+        {
+            return visits($this);
+        }
 }

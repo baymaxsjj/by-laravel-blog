@@ -7,13 +7,14 @@ use App\Http\Requests\Api\ArticleRequest;
 use App\Models\Article;
 use App\Models\Label;
 use App\Models\User;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
-    //
+    /**
+     * A    添加文章
+     */
     public function add(ArticleRequest $request){
         $userAuth = Auth::guard('api')->user();
         // 在数据库中查找用户信息
@@ -31,18 +32,31 @@ class ArticleController extends Controller
         }
         return $this->message('文章发表成功');
     }
-    // U:文章类别列表
+    public function update(ArticleRequest $request){
+        $id=$request->input('id');
+        unset($request['id']);
+        unset($request['label']);
+        $article=Article::where('id',$id)->update($request->all());
+        return $this->message('文章修改成功');
+    }
+    /**
+     *  U   文章类别列表
+     */
     public function class(){
         $class=Article::distinct()->get(['classty']);
         return $this->success($class);
     }
-    // U：搜索文章
+    /**
+     *  U   搜索文章
+     */
     public function search(ArticleRequest $request){
         $search=$request->input("search");
         $articles=Article::where('title',$search)->orWhere('title','like','%'.$search.'%')->take(5)->get(['id','title']);
         return  $this->success($articles);
     }
-    // U:文章列表
+    /**
+     *  U   文章列表
+     */
     public function list(ArticleRequest $request){
         $show=['id','title','desc','img','click','classty','like','deleted_at','created_at','updated_at'];
         $type='';
@@ -66,16 +80,23 @@ class ArticleController extends Controller
         }
         return  $this->success($articles);
     }
-    // U：文章内容
+    /**
+     * U    文章内容
+     */
     public function content(ArticleRequest $request){
-        try{
-            $content=Article::findOrFail($request->input('id'));
-            return $this->success($content);
-        }catch(Exception $e){
-            return $this->failed('查询失败,文章不存在');
-        }
+
+        $content=Article::findOrFail($request->get('id'));
+        $label=Label::where('article_id',$request->get('id'))->get()->toArray();
+        $content->label = array_values(array_unique(array_column($label, 'label')));
+         // 访问统计
+        $content->visits()->increment();
+         // visits($content)->increment();
+         $content->view_count = $content->visits()->count();
+        return $this->success( $content);
     }
-    // A:删除
+    /**
+     * A   文章删除
+     */
     public function remove(ArticleRequest $request){
             $id=$request->get('id');
             $article=Article::withTrashed()->find($id);
@@ -96,7 +117,9 @@ class ArticleController extends Controller
             }
     }
 
-// 管理员列表
+    /**
+     * A    文章列表
+     */
     public function alist(Request $request){
         $show=['id','title','desc','img','click','classty','like','deleted_at','created_at','updated_at'];
         $articles=Article::withTrashed()->with(['label' => function($query) {
@@ -106,5 +129,9 @@ class ArticleController extends Controller
         ->orderBy('id','desc')
         ->paginate(10);
         return  $this->success($articles);
+    }
+    public function info(){
+            $count=Article::count();
+            return $this->success($count);
     }
 }

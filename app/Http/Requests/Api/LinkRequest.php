@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class LinkRequest extends FormRequest
 {
     /**
@@ -12,12 +10,12 @@ class LinkRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {   
+    {
         switch (FormRequest::getPathInfo()){
             case '/api/v1/user/link/apply':
                 return [
                     'name'=>['required','max:20'],
-                    'link'=>['required'],
+                    'link'=>['required','url'],
                     'info'=>['required','between:5,50'],
                     'imgUrl'=>['required']
                 ];
@@ -32,17 +30,19 @@ class LinkRequest extends FormRequest
                     'link'=>['required'],
                     'info'=>['required','between:5,50'],
                 ];
-            
+
         }
     }
-    public function message(){
+    public function messages(){
         return [
             'name.required'=>'网站名称不能为空',
-            'name.max'=>'网站名称不能超过20位',
+            'name.max'=>'网站名称不能超过20字',
             'link.require'=>'网站域名不能为空',
+            'link.url'=>'网站域名格式不正确',
             'info.require'=>'个人介绍不能为空',
             'info.between'=>'个人介绍应在5~50字之间',
             'imgUrl'=>'网站图标不能为空',
+            'id.required'=>'id不能为空',
         ];
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class MessageRequest extends FormRequest
 {
     /**
@@ -16,8 +14,9 @@ class MessageRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
             case '/api/v1/message/add':
                 return [
-                    'message'=>['required','between:5,50'],
+                    'message'=>['required','between:3,200'],
                     'tourist'=>['between:3,10'],
+                    'qq'=>['between:3,11'],
                     'article_id'=>['required'],
                 ];
             case '/api/v1/admin/message/remove':
@@ -30,12 +29,14 @@ class MessageRequest extends FormRequest
                 ];
         }
     }
-    public function message(){
+    public function messages(){
         return [
             'message.required'=>'留言内容不能为空',
-            'message.between'=>'留言应在5~50字之间',
+            'message.between'=>'留言应在2~200字之间',
             'article_id'=>'文章id不能为空',
-            'id.require'=>'文章id不能为空'
+            'id.require'=>'文章id不能为空',
+            'tourist.between'=>'tourist应在3~10字之间',
+            'qq.between'=>'qq号应在3~11数之间'
         ];
     }
 }

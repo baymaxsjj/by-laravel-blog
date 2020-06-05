@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class LabelRequest extends FormRequest
 {
     /**
@@ -12,7 +10,7 @@ class LabelRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {   
+    {
         switch (FormRequest::getPathInfo()){
             case '/api/v1/admin/label/add':
                 return [
@@ -24,11 +22,11 @@ class LabelRequest extends FormRequest
                 ];
         }
     }
-    public function message(){
+    public function messages(){
         return [
             'label.reqiduired'=>'标签内容不能为空',
-            'label.between'=>'留言应在5~50字之间',
-            'id.reqiduired'=>'管理员id不能为空'
+            'label.between'=>'留言应在1~10字之间',
+            'id.reqiduired'=>'id不能为空'
         ];
     }
 }

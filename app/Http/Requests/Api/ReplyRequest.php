@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class ReplyRequest extends FormRequest
 {
     /**
@@ -16,7 +14,7 @@ class ReplyRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
             case '/api/v1/user/reply/add':
                 return [
-                    'reply'=>['required','between:5,50'],
+                    'reply'=>['required','between:1,200'],
                     'mess_id'=>['required']
                 ];
             case '/api/v1/admin/reply/remove':
@@ -33,10 +31,10 @@ class ReplyRequest extends FormRequest
                 ];
         }
     }
-    public function message(){
+    public function messages(){
         return [
             'reply.required'=>'回复内容不能为空',
-            'reply.between'=>'回复应在5~50字之间',
+            'reply.between'=>'回复应在1~200字之间',
             'mess_id.required'=>'回复者id不能为空',
             'id.require'=>'文章id不能为空'
         ];

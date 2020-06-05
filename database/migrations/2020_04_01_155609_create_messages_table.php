@@ -19,7 +19,8 @@ class CreateMessagesTable extends Migration
             $table->text('message')->comment('留言');
             $table->integer('user_id')->comment('用户id');
             $table->integer('article_id')->default(0)->comment('文章id');
-			$table->string('tourist')->comment('名称');
+			$table->string('tourist')->nullable()->comment('名称');
+			$table->integer('qq')->nullable()->comment('qq');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -30,7 +30,13 @@ class ReplyController extends Controller
         $re->user_id=$userAuth->id;
         $re->mess_id=$mess_id;
         $re->save();
-        return $this->message('留言成功');
+        $mess='';
+        if($mess_id==0){
+            $mess="留言成功";
+        }else{
+            $mess="回复成功";
+        }
+        return $this->message($mess);
     }
     // 删除为0，
     public function remove(ReplyRequest $request){

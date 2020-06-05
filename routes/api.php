@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
+    Route::get('/blog/info','ArticleController@info');
     // 登录
     Route::post('/login','UserController@login')->name('users.login');
     // 注册
@@ -58,6 +59,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('user/reply/add','replyController@add')->name('users.replyadd');
         // 获取管理员信息
         Route::get('/user/info','AdminController@info');
+        // 修改管理信息
+        Route::post('/admin/update','AdminController@update');
     });
 
     // 管理员登录
@@ -65,13 +68,13 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::middleware('api.adminlogin')->group(function () {
         // // 获取管理员信息
         // Route::get('/admin/info','AdminController@info');
-        // 修改管理信息
-        Route::post('/admin/update','AdminController@update');
         // 用户列表可传 0，或1，
         Route::post('/admin/user/list','UserController@list');
         Route::post('/admin/user/remove','UserController@remove');
         // 文章模块
         Route::post('/admin/article/add','ArticleController@add');
+        // 文章修改
+        Route::post('/admin/article/update','ArticleController@update');
         Route::post('/admin/article/remove','ArticleController@remove');
         // 获取文章列表
         Route::post('/admin/blog/list','ArticleController@alist');

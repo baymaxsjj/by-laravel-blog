@@ -9,7 +9,7 @@ class Message extends Model
     use SoftDeletes;
     // 接受的字段
     protected $fillable = [
-        'message', 'user_id','article'
+        'message', 'user_id','article','qq'
     ];
     protected $table= 'messages';
     protected $dates = ['deleted_at'];

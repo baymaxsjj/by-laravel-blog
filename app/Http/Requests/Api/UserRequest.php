@@ -40,7 +40,7 @@ class UserRequest extends FormRequest
                     'password' => ['required','between:6,20'],
                     'pass' => ['between:6,20'],
                     'phone' => ['unique:users,phone'],
-                    'avatar_url'=>[ 'between:3,100'],
+                    'avatar_url'=>[ 'between:3,100','url'],
                 ];
             case '/api/v1/user/modify':
                 return [
@@ -68,14 +68,11 @@ class UserRequest extends FormRequest
             'phone.unique' => '手机号已存在',
             'password.required' => '密码不能为空',
             'password.between' => '密码长度为6~20位之间',
-            'old_password.required' => '旧密码不能为空',
-            'old_password.between' => '密码长度为6~20位之间',
-            'new_password.required' => '新密码不能为空',
-            'new_password.between' => '密码长度为6~20位之间',
-            // 'password.max' => '密码长度不能超过32个字符',
-            // 'password.min' => '密码长度不能少于6个字符',
+            'pass.required' => '新密码不能为空',
+            'pass.between' => '密码长度为6~20位之间',
             'id.required'=>'id必须填写',
-            'id.exists' => '用户id不存在'
+            'avatar_url'=>'头像地址长度应在1~100字之间',
+            'avatar_url.url'=>'头像地址格式不正确'
         ];
     }
 }

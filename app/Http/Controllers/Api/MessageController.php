@@ -22,6 +22,9 @@ class MessageController extends Controller
             $message->user_id=$userAuth->id;
         }else{
             $tourist=$request->get('tourist');
+            if($request->has('qq')){
+                 $message->qq=$request->get('qq');
+            }
             if($tourist){
                 $message->tourist=$tourist;
             }else{
@@ -58,7 +61,7 @@ class MessageController extends Controller
                 $query->select(['id','name','avatar_url'])->get();
             }])->select(['user_id','mess_id','reply','created_at'])->get();
         },
-        ])->select(['id','user_id','tourist','message','created_at'])
+        ])->select(['id','user_id','tourist','qq','message','created_at'])
         ->orderBy('id','desc')
         ->paginate(10);
        // $user = $list->user;

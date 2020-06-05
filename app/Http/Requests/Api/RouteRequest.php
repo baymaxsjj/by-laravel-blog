@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class RouteRequest extends FormRequest
 {
     /**
@@ -34,7 +32,7 @@ class RouteRequest extends FormRequest
 
         }
     }
-    public function message(){
+    public function messages(){
         return [
             'data.required'=>'日期不能为空',
             'data.between'=>'日期5~30字之间',
@@ -42,7 +40,9 @@ class RouteRequest extends FormRequest
             'category.between'=>'类别应在5~30字之间',
             'content.required'=>'内容不能为空',
             'content.between'=>'应在5~100字之间',
-            'id.require'=>'id不能为空'
+            'id.required'=>'id不能为空',
+            'content.required'=>'内容不能为空'
+            'content.between'=>'内容应在5~100字之间'
         ];
     }
 }

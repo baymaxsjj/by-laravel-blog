@@ -42,6 +42,7 @@ class UserController extends Controller
   }
 //   注册
   public function sign(UserRequest $request){
+    $request['avatar_url']='http://q1.qlogo.cn/g?b=qq&nk='.$request->get('email').'&s=100';
     $user=User::create($request->all());
     return $this->success("注册成功");
   }
