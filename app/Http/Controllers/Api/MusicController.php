@@ -18,7 +18,7 @@ class MusicController extends Controller
         return $this->message('添加成功');
     }
     function remove(MusicRequest $request){
-       $id=$request->get('id');
+       $id=$request->input('id');
        $music=Music::withTrashed()->find($id);
        if(is_null($music->deleted_at)){
            $boo=Music::find($id)->delete();
