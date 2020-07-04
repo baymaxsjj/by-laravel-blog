@@ -44,7 +44,7 @@ class UserController extends Controller
   public function sign(UserRequest $request){
     $request['avatar_url']='http://q1.qlogo.cn/g?b=qq&nk='.$request->get('email').'&s=100';
     $user=User::create($request->all());
-    return $this->success("注册成功");
+    return $this->message("注册成功");
   }
 // 获取个人信息 userInfo()
   public function userinfo(){
@@ -61,7 +61,7 @@ class UserController extends Controller
         $userAuth=Auth::guard('api')->user();
         $user=User::find($userAuth->id);
         $user->update($request->all());
-        return $this->success('修改成功');
+        return $this->message('修改成功');
   }
   public function remove(UserRequest $request){
         $id=$request->get('id');

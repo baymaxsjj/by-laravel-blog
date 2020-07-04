@@ -53,13 +53,13 @@ class MessageController extends Controller
     public function list(MessageRequest $request){
         $id=$request->input('id');
         $list=Message::where('article_id',$id)->with(['user' => function($query) {
-            $query->select(['id','name','avatar_url'])->get();
+            $query->select(['id','name','avatar_url',"is_admin"])->get();
         },
         'reply' => function($query) {
            // $query->select(['mess_id','reply','created_at'])->get();
             $query->with(['user' => function($query) {
-                $query->select(['id','name','avatar_url'])->get();
-            }])->select(['user_id','mess_id','reply','created_at'])->get();
+                $query->select(['id','name','avatar_url',"is_admin"])->get();
+            }])->select(['id','user_id','mess_id','reply','created_at'])->get();
         },
         ])->select(['id','user_id','tourist','qq','message','created_at'])
         ->orderBy('id','desc')

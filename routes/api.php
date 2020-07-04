@@ -42,7 +42,9 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     // 获取类型列表
     Route::get('/blog/search','ArticleController@search');
     // 获取文章内容
-    Route::post('/blog/content','ArticleController@content')->name('users.articlecontent');
+    Route::post('/blog/content','ArticleController@content');
+    // 点赞文章内容
+    Route::post('/blog/click','ArticleController@click');
     // 获取音乐列表
     Route::get('/music/list','MusicController@list');
     // 留言
@@ -56,7 +58,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         // 友情链接
         Route::post('user/link/apply','LinkContorller@apply')->name('users.link');
         // 评论
-        Route::post('user/reply/add','replyController@add')->name('users.replyadd');
+        Route::post('user/reply/add','ReplyController@add');
         // 获取管理员信息
         Route::get('/user/info','AdminController@info');
         // 修改管理信息
@@ -94,8 +96,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::get('admin/message/alist','MessageController@alist');
 
         // 评论模块
-        Route::post('admin/reply/remove','replyController@remove');
-        Route::get('admin/reply/alist','replyController@alist');
+        Route::post('admin/reply/remove','ReplyController@remove');
+        Route::get('admin/reply/alist','ReplyController@alist');
 
         // 标签模块
         Route::post('admin/label/add','LabelController@add');

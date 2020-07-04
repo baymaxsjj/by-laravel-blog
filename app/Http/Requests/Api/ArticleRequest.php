@@ -13,15 +13,15 @@ class ArticleRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
             case '/api/v1/admin/article/add':
                 return [
-                    'title'=>['required','between:5,30'],
-                    'desc'=>['between:10,50'],
+                    'title'=>['required'],
+                    'desc'=>['required'],
                     'content'=>['required']
                 ];
             case '/api/v1/admin/article/update':
                 return [
                     'id'=>['required'],
-                    'title'=>['required','between:5,30'],
-                    'desc'=>['between:10,50'],
+                    'title'=>['required'],
+                    'desc'=>['required'],
                     'content'=>['required']
                 ];
             case '/api/v1/admin/article/remove':
@@ -38,28 +38,30 @@ class ArticleRequest extends FormRequest
                 ];
             case '/api/v1/blog/list':
                 return [
-                    'label'=>['between:1,10','exists:labels,label'],
-                    'class'=>['between:1,10','exists:articles,classty'],
+                    'label'=>['exists:labels,label'],
+                    'class'=>['exists:articles,classty'],
                     'search'=>['between:1,50']
                 ];
             case '/api/v1/blog/search':
                 return [
                     'search'=>['between:1,50'],
                 ];
+            case '/api/v1/blog/click':
+                return [
+                    'id'=>['required','exists:articles,id'],
+                ];
         }
     }
     public function messages(){
         return [
             'title.reqiduired'=>'标题内容不能为空',
-            'title.between'=>'标题应在5~30字之间',
             'id.reqiduired'=>'文章id不能为空',
             'id.exists'=>'文章不存在',
-            'desc.between'=>'文章介绍应在50~50字之间',
+            'desc.reqiduired'=>'文章介绍不能为空',
             'content.reqiduired'=>'文章内容不能为空',
-            'class.between'=>'类别应在1~10字之间',
             'class.exists'=>'文章类别不存在',
-            'label.between'=>'标签应在1~10字之间',
-            'label.exists'=>'文章标签不存在'
+            'label.exists'=>'文章标签不存在',
+            'search.between'=>'查询内容应在1~50字之间'
         ];
     }
 }

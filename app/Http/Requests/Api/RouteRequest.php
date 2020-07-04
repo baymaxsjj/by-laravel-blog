@@ -14,9 +14,9 @@ class RouteRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
             case '/api/v1/admin/route/add':
                 return [
-                    'data'=>['required','between:5,30'],
-                    'category'=>['required','between:5,30'],
-                    'content'=>['required','between:5,100']
+                    'data'=>['required','between:1,30'],
+                    'category'=>['required','between:1,50'],
+                    'content'=>['required','between:1,100']
                 ];
             case '/api/v1/admin/route/remove':
                 return [
@@ -25,9 +25,9 @@ class RouteRequest extends FormRequest
             case '/api/v1/admin/route/update':
                 return [
                     'id'=>['required'],
-                    'data'=>['required','between:5,30'],
-                    'category'=>['required','between:5,30'],
-                    'content'=>['required','between:5,100']
+                    'data'=>['required','between:1,30'],
+                    'category'=>['required','between:1,50'],
+                    'content'=>['required','between:1,100']
                 ];
 
         }
@@ -35,14 +35,14 @@ class RouteRequest extends FormRequest
     public function messages(){
         return [
             'data.required'=>'日期不能为空',
-            'data.between'=>'日期5~30字之间',
+            'data.between'=>'日期1~30字之间',
             'category.required'=>'类别内容不能为空',
-            'category.between'=>'类别应在5~30字之间',
+            'category.between'=>'类别应在1~50字之间',
             'content.required'=>'内容不能为空',
-            'content.between'=>'应在5~100字之间',
+            'content.between'=>'应在1~100字之间',
             'id.required'=>'id不能为空',
-            'content.required'=>'内容不能为空'
-            'content.between'=>'内容应在5~100字之间'
+            'content.required'=>'内容不能为空',
+            'content.between'=>'内容应在1~100字之间'
         ];
     }
 }

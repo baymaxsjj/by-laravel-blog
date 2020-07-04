@@ -14,8 +14,8 @@ class MessageRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
             case '/api/v1/message/add':
                 return [
-                    'message'=>['required','between:3,200'],
-                    'tourist'=>['between:3,10'],
+                    'message'=>['required','between:1,200'],
+                    'tourist'=>['between:1,10'],
                     'qq'=>['between:3,11'],
                     'article_id'=>['required'],
                 ];
@@ -32,10 +32,10 @@ class MessageRequest extends FormRequest
     public function messages(){
         return [
             'message.required'=>'留言内容不能为空',
-            'message.between'=>'留言应在2~200字之间',
+            'message.between'=>'留言应在1~200字之间',
             'article_id'=>'文章id不能为空',
             'id.require'=>'文章id不能为空',
-            'tourist.between'=>'tourist应在3~10字之间',
+            'tourist.between'=>'tourist应在1~10字之间',
             'qq.between'=>'qq号应在3~11数之间'
         ];
     }

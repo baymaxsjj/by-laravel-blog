@@ -27,7 +27,7 @@ class User extends Authenticatable implements JWTSubject
     protected $table= 'users';
     // 表格隐藏的字段
     protected $hidden = [
-        'password', 'remember_token', 'is_admin'
+        'password', 'remember_token'
     ];
     protected $dates = ['deleted_at'];
     //将密码进行加密

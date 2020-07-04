@@ -14,7 +14,7 @@ class LabelRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
             case '/api/v1/admin/label/add':
                 return [
-                    'label'=>['required','between:1,10'],
+                    'label'=>['required'],
                 ];
             case '/api/v1/admin/label/remove':
                 return [
@@ -25,7 +25,6 @@ class LabelRequest extends FormRequest
     public function messages(){
         return [
             'label.reqiduired'=>'标签内容不能为空',
-            'label.between'=>'留言应在1~10字之间',
             'id.reqiduired'=>'id不能为空'
         ];
     }

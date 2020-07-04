@@ -14,7 +14,7 @@ class MusicRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
           case '/api/v1/admin/music/add':
               return [
-                 'music_id'=>['required','between:5,50','unique:musics,music_id'],
+                 'music_id'=>['required','between:5,100','unique:musics,music_id'],
                  'title'=>['required','between:1,50'],
                  'name'=>['required','between:1,50'],
                  'type'=>['required','between:1,10']

@@ -83,7 +83,7 @@ class ArticleController extends Controller
     /**
      * U    文章内容
      */
-    public function content(ArticleRequest $request){
+       public function content(ArticleRequest $request){
 
         $content=Article::findOrFail($request->get('id'));
         $label=Label::where('article_id',$request->get('id'))->get()->toArray();
@@ -133,5 +133,11 @@ class ArticleController extends Controller
     public function info(){
             $count=Article::count();
             return $this->success($count);
+    }
+    public function click(ArticleRequest $request){
+        $id=$request->input('id');
+        $click=Article::where('id',$id)->first('click');
+        $cont=Article::where('id',$id)->update(['click'=>$click->click+1]);
+        return  $this->success($cont);
     }
 }
