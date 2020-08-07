@@ -42,7 +42,12 @@ class UserController extends Controller
   }
 //   注册
   public function sign(UserRequest $request){
-    $request['avatar_url']='http://q1.qlogo.cn/g?b=qq&nk='.$request->get('email').'&s=100';
+      $arr=explode('@',$request->get('email'));
+      if($arr[1]=='qq.com'){
+            $request['avatar_url']='http://q1.qlogo.cn/g?b=qq&nk='.$arr[0 ].'&s=100';
+      }else{
+           $request['avatar_url']="";
+      }
     $user=User::create($request->all());
     return $this->message("注册成功");
   }

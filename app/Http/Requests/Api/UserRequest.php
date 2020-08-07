@@ -19,7 +19,7 @@ class UserRequest extends FormRequest
             case '/api/v1/sign':
                 return [
                     'name' => ['required', 'max:16', 'unique:users,name'],
-                    'email' => ['required', 'unique:users,email'],
+                    'email' => ['required','email', 'unique:users,email'],
                     'password' => ['required', 'between:6,20'],
                     'phone' => ['unique:users,phone']
                 ];
@@ -60,12 +60,14 @@ class UserRequest extends FormRequest
     {
         return [
             'name.required'=>'用户名不能为空',
-            'name.exists'=>'用户名不存在',
+            'name.exists'=>'用户名或密码错误',
             'name.max' => '用户名长度不能超过16个字符',
             'name.unique' => '用户名已经存在',
             'email.required' => '邮箱不能为空',
             'email.unique' => '邮箱已经存在',
+            'email.email' => '邮箱地址不正确',
             'phone.unique' => '手机号已存在',
+            'phone.phone' => '手机号长度不正确',
             'password.required' => '密码不能为空',
             'password.between' => '密码长度为6~20位之间',
             'pass.required' => '新密码不能为空',

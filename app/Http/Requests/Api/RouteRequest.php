@@ -15,6 +15,7 @@ class RouteRequest extends FormRequest
             case '/api/v1/admin/route/add':
                 return [
                     'data'=>['required','between:1,30'],
+                    'logo'=>['url','max:100'],
                     'category'=>['required','between:1,50'],
                     'content'=>['required','between:1,100']
                 ];
@@ -27,7 +28,8 @@ class RouteRequest extends FormRequest
                     'id'=>['required'],
                     'data'=>['required','between:1,30'],
                     'category'=>['required','between:1,50'],
-                    'content'=>['required','between:1,100']
+                    'content'=>['required','between:1,100'],
+                    'logo'=>['url','max:100'],
                 ];
 
         }
@@ -42,7 +44,9 @@ class RouteRequest extends FormRequest
             'content.between'=>'应在1~100字之间',
             'id.required'=>'id不能为空',
             'content.required'=>'内容不能为空',
-            'content.between'=>'内容应在1~100字之间'
+            'content.between'=>'内容应在1~100字之间',
+            'logo.url'=>'logo链接格式不正确',
+            'log.max'=>'链接长度不能超过100字'
         ];
     }
 }

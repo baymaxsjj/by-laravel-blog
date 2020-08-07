@@ -9,7 +9,7 @@ class Route extends Model
    use SoftDeletes;
     //routes
     protected $fillable = [
-        'data', 'category','content'
+        'data', 'category','content','logo'
     ];
     protected $table= 'routes';
     protected $dates = ['deleted_at'];

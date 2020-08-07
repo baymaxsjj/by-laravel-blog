@@ -14,44 +14,33 @@ class LinkContorller extends Controller
     // 可传入申请和为申请列表，0，1
     // 申请列表
     public function index(Request $request){
+        $link=Link::withTrashed()->orderBy('created_at','desc')->paginate(5);
+        return $this->success($link);
 
-        if(empty($request->has('apply'))){
-            $link=Link::paginate(5);
-            return $this->success($link);
-        }else{
-            $link=Link::where('apply',$request->get('apply'))->paginate(5);;
-            return $this->success($link);
-        }
         // return $this->success($request->input('apply'));
     }
-    public function list(){
-        $links=Link::where('apply','1')->get();
+    public function list(LinkRequest $request){
+        $show=['name','info','link','imgUrl'];
+        $type=$request->get('type');
+        $links=Link::where(['type'=>$type])->get($show);
         return $this->success($links);
     }
 
     //user 申请添加友情链接
-    public function apply(LinkRequest $request){
-        $link=new Link();
-        $link->name=$request->input('name');
-        $link->link=$request->input('link');
-        $link->info=$request->input('info');
-        $link->imgUrl=$request->input('imgUrl');
-        $boo=$link->save();
-        if(!$boo){
-            return $this->failed('申请失败');
-        }
-        return $this->success('申请成功,等待管理员添加');
+    public function add(LinkRequest $request){
+        $link=Link::create($request->all());
+        return $this->message('添加成功');
     }
     //admin 添加友情链接
     //admin  移除友情链接
     public function remove(LinkRequest $request){
         $id=$request->input('id');
-        $link=Link::find($id);
-        if(empty($link->apply)){
-            $boo=$link->update(['apply'=>1]);
+        $link=Link::withTrashed()->find($id);
+        if(is_null($link->deleted_at)){
+            $boo=Link::find($id)->delete();
             return $this->message('添加成功');
         }else{
-            $boo=$link->update(['apply'=>0]);
+            $boo=Link::withTrashed()->find($id)->restore();
             return $this->message('移除成功');
         }
     }

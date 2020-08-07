@@ -12,7 +12,7 @@ class LinkRequest extends FormRequest
     public function rules()
     {
         switch (FormRequest::getPathInfo()){
-            case '/api/v1/user/link/apply':
+            case '/api/v1/admin/link/add':
                 return [
                     'name'=>['required','max:20'],
                     'link'=>['required','url'],
@@ -23,12 +23,17 @@ class LinkRequest extends FormRequest
                 return [
                     'id'=>['required']
                 ];
+            case '/api/v1/link/list':
+                return [
+                    'type'=>['required']
+                ];
             case '/api/v1/admin/link/update':
                 return [
                     'id'=>['required'],
                     'name'=>['required','max:20'],
                     'link'=>['required'],
                     'info'=>['required','between:5,50'],
+                    'type'=>['required']
                 ];
 
         }

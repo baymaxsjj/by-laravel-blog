@@ -37,7 +37,7 @@ class RouteController extends Controller
     }
 
     public function userList(){
-        $list=Route::orderBy('data','desc')->get(['id','data','content','category']);
+        $list=Route::orderBy('data','desc')->get(['id','logo','data','content','category']);
         return $this->success($list);
     }
     public function carousel(){

@@ -23,6 +23,11 @@ class Article extends Model
         $vlaue=is_null($vlaue)?1:0;
         return $vlaue;
     }
+    // 正向关联
+    public function message(){
+      return $this->hasMany('App\Models\Message','article_id','id');
+    }
+
      public function visits()
         {
             return visits($this);

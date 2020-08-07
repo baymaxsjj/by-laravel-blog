@@ -23,6 +23,10 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::post('/login','UserController@login')->name('users.login');
     // 注册
     Route::post('/sign','UserController@sign')->name('users.sign');
+    // 发送邮件
+    Route::post('/sendEmail','ValidateController@send_email');
+    // 忘记密码
+    Route::post('/user/forget','ValidateController@forget');
     // 获取友情链接
     Route::get('/link/list','LinkContorller@list')->name('users.link');
     // 获取留言
@@ -49,14 +53,15 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/music/list','MusicController@list');
     // 留言
     Route::post('/message/add','MessageController@add');
+    //
+    Route::post('/admin/pictures/add','ArticleController@pictures');
     // 登陆后操作
     Route::middleware('api.refresh')->group(function () {
         // 个人用户信息
         Route::post('/user/info','UserController@userinfo')->name('users.info');
         Route::post('/user/logout','UserController@logout')->name('users.logout');
         Route::post('/user/modify','UserController@modify')->name('users.modify');
-        // 友情链接
-        Route::post('user/link/apply','LinkContorller@apply')->name('users.link');
+
         // 评论
         Route::post('user/reply/add','ReplyController@add');
         // 获取管理员信息
@@ -75,6 +80,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('/admin/user/remove','UserController@remove');
         // 文章模块
         Route::post('/admin/article/add','ArticleController@add');
+
         // 文章修改
         Route::post('/admin/article/update','ArticleController@update');
         Route::post('/admin/article/remove','ArticleController@remove');
@@ -84,6 +90,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('admin/link/remove','LinkContorller@remove');
         Route::post('admin/link/list','LinkContorller@index');
         Route::post('admin/link/update','LinkContorller@update');
+        Route::post('admin/link/add','LinkContorller@add');
 
         // 成长路线模块
         Route::post('admin/route/remove','RouteController@remove');

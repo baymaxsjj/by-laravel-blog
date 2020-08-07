@@ -14,7 +14,7 @@ class MessageRequest extends FormRequest
         switch (FormRequest::getPathInfo()){
             case '/api/v1/message/add':
                 return [
-                    'message'=>['required','between:1,200'],
+                    'message'=>['required','between:1,500'],
                     'tourist'=>['between:1,10'],
                     'qq'=>['between:3,11'],
                     'article_id'=>['required'],
