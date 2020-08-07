@@ -21,19 +21,19 @@ class ValidateController extends Controller
 
         // 发送邮件
         public function send_email(EmailRequest $request){
-            // $user = User::whereEmail($request->email)->first();
+            $user = User::whereEmail($request->email)->first();
 
-            // if ($this->is_robot($user->id, 60))
-            //     return $this->failed('操作太频繁，稍后再试', 200);
+            if ($this->is_robot($user->id, 60))
+                return $this->failed('操作太频繁，稍后再试', 200);
 
-            // // 验证码，同时错误次数归0
-            // $user->captcha = $this->generate_captcha();
-            // Redis::setex('captcha:'.$user->id, 300, $user->captcha);
-            // Redis::del('checkCount:'.$user['id']);
+            // 验证码，同时错误次数归0
+            $user->captcha = $this->generate_captcha();
+            Redis::setex('captcha:'.$user->id, 300, $user->captcha);
+            Redis::del('checkCount:'.$user['id']);
 
-            // $this->update_robot_time($user->id);
+            $this->update_robot_time($user->id);
 
-            // Mail::to($user)->send(new Validate($user));
+            Mail::to($user)->send(new Validate($user));
             return $this->message('邮件发送成功');
             // return $this->success($user);
         }
