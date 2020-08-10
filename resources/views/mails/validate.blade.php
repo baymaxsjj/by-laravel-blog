@@ -2,20 +2,23 @@
 
 <h2>亲爱的用户：{{ $data->name }}</h2>
 
-重置密码的验证码是<span style="background:#b4ffeb;padding: 0 5px;color: #f56c6c;font-weight: bold;">{{ $data->captcha }} </span>，请在5分钟内验证。
+您正在修改密码，请在验证码输入框中输入：<span class="vali">{{ $data->captcha }} </span>,以完成操作。请在5分钟内验证。
 
 @component('mail::button', ['url' => ''])
 去验证
 @endcomponent
 
-
-@component('mail::panel')
-如果不是本人操作发送的邮件，请提防账号被盗！
-@endcomponent
-
-<p style="text-align: right;padding-right: 10px;">
-    Thanks<br>
-    <span  style="color:#51cacc;font-weight: bold;">{{ config('app.name') }}</span>
+<hr/>
+<p class="cont">
+    注意：此操作可能会修改您的密码、登录邮箱或绑定手机。如非本人操作，请及时登录并修改密码以保证帐户安全
+    （工作人员不会向你索取此验证码，请勿泄漏！)
 </p>
+<hr/>
+<p class="cont" >
+    此为系统邮件，请勿回复<br/>
+    请保管好您的邮箱，避免账号被他人盗用
+</p>
+
+<h2>{{ config('app.name') }}</h2>
 
 @endcomponent

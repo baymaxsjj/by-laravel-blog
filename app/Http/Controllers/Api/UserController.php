@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Mail;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use App\Mail\Welcome;
 class UserController extends Controller
 {
 // 登录
@@ -49,6 +49,7 @@ class UserController extends Controller
            $request['avatar_url']="";
       }
     $user=User::create($request->all());
+    Mail::to($user)->send(new Welcome($user));
     return $this->message("注册成功");
   }
 // 获取个人信息 userInfo()

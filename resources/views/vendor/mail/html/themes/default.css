@@ -110,12 +110,13 @@ img {
     font-weight: bold;
     text-decoration: none;
 }
-
+.cont{
+    font-size:12px;
+}
 /* Logo */
 
 .logo {
     height: 75px;
-    width: 75px;
 }
 
 /* Body */
@@ -242,12 +243,16 @@ img {
 
 .button-green,
 .button-success {
-   color: #fff;
-   background-color: #5bc0de;
-   border-color: #46b8da;
-   font-size: 16px;
-   border-radius: 0;
-   padding:10px 30px;
+   background: #00c4cc;
+   border-radius: 4px;
+   color: #ffffff;
+   display: inline-block;
+   font-family: Open Sans, Helvetica, Arial, sans serif;
+   font-size: 14px;
+   font-weight: 600;
+   mso-padding-alt: 0px;
+   padding: 9px 16px;
+   text-decoration: none;
 }
 .button-success:hover{
     border-color: #51cacc;
@@ -292,4 +297,9 @@ img {
 
 .break-all {
     word-break: break-all;
+}
+.vali{
+    color: #f56c6c;
+    font-weight: bold;
+    font-size:20px
 }
