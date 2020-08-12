@@ -59,11 +59,12 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::middleware('api.refresh')->group(function () {
         // 个人用户信息
         Route::post('/user/info','UserController@userinfo')->name('users.info');
-        Route::post('/user/logout','UserController@logout')->name('users.logout');
+        Route::get('/user/logout','UserController@logout')->name('users.logout');
         Route::post('/user/modify','UserController@modify')->name('users.modify');
 
         // 评论
         Route::post('user/reply/add','ReplyController@add');
+         Route::post('user/message/remove','MessageController@user_remove');
         // 获取管理员信息
         Route::get('/user/info','AdminController@info');
         // 修改管理信息

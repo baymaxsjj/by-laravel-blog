@@ -23,6 +23,10 @@ class MessageRequest extends FormRequest
                 return [
                     'id'=>['required']
                 ];
+            case '/api/v1/user/message/remove':
+                return [
+                    'id'=>['required']
+                ];
             case '/api/v1/message/list':
                 return [
                     'id'=>['required']

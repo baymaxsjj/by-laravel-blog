@@ -50,9 +50,31 @@ class MessageController extends Controller
             return $this->message('移除成功');
         }
     }
+    // 留言删除
+    // 必填 id
+    public function user_remove(MessageRequest $request){
+        $id=$request->get('id');
+        $message=Message::find($id);
+         // return $this->message($message);
+        $userAuth = Auth::guard('api')->user();
+        if($message->user_id==$userAuth->id){
+             $boo=Message::find($id)->delete();
+            return $this->message('留言删除成功！');
+        }else{
+            return $this->message('留言删除失败！');
+        }
+
+    }
     public function list(MessageRequest $request){
         $id=$request->input('id');
-        $list=Message::where('article_id',$id)->with(['user' => function($query) {
+        $arr=[];
+        if($request->input('id')>=0){
+            $arr=['article_id'=>$id];
+        }else{
+            $userAuth = Auth::guard('api')->user();
+            $arr=['user_id'=>$userAuth->id];
+        }
+        $list=Message::where($arr)->with(['user' => function($query) {
             $query->select(['id','name','avatar_url',"is_admin"])->get();
         },
         'reply' => function($query) {
