@@ -18,19 +18,20 @@ class MessageController extends Controller
         $content=$request->input('message');
         $message=new Message();
         // 是否是为文章留言
-        if($userAuth){
-            $message->user_id=$userAuth->id;
-        }else{
-            $tourist=$request->get('tourist');
-            if($request->has('qq')){
-                 $message->qq=$request->get('qq');
-            }
-            if($tourist){
-                $message->tourist=$tourist;
-            }else{
-                return $this->failed('留言失败！登录失效',422);
-            }
+        $message->user_id=$userAuth->id;
+        $message->article_id=$request->get('article_id');
+        $message->message=$request->get('message');
+        $message->save();
+        return $this->message("留言成功");
+
+    }
+    public function touristAdd(MessageRequest $request){
+         $message=new Message();
+        $tourist=$request->get('tourist');
+        if($request->has('qq')){
+            $message->qq=$request->get('qq');
         }
+        $message->tourist=$tourist;
         $message->article_id=$request->get('article_id');
         $message->message=$request->get('message');
         $message->save();
