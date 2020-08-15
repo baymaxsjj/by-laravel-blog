@@ -90,14 +90,31 @@ class ArticleController extends Controller
      * U    文章内容
      */
        public function content(ArticleRequest $request){
-
-        $content=Article::findOrFail($request->get('id'));
-        $label=Label::where('article_id',$request->get('id'))->get()->toArray();
-        $content->label = array_values(array_unique(array_column($label, 'label')));
-         // 访问统计
-        $content->visits()->increment();
-         // visits($content)->increment();
-         $content->view_count = $content->visits()->count();
+          $id=$request->get('id');
+        $content=Article::findOrFail($id);
+         // 上一篇和下一篇文章
+         if ($content){
+             $label=Label::where('article_id',$id)->get()->toArray();
+             $content->label = array_values(array_unique(array_column($label, 'label')));
+              // 访问统计
+             $content->visits()->increment();
+              // visits($content)->increment();
+             $content->view_count = $content->visits()->count();
+             $prevId = Article::where('id', '<', $id)->max('id');
+             $nextId = Article::where('id', '>', $id)->min('id');
+             if(empty($prevId)){
+                 $id=Article::orderBy('id', 'desc')->first('id');
+                 $prevId =$id->id;
+             }
+             if(empty($nextId)){
+                 $id=Article::orderBy('id', 'asc')->first('id');
+                 $nextId =$id->id;
+             }
+             $content->prevArticle = Article::where('id', $prevId)->get(['id', 'title']);
+             $content->nextrAticle = Article::where('id', $nextId)->get(['id', 'title']);
+         } else {
+             return $this->failed('该文章已经下架');
+         }
         return $this->success( $content);
     }
     /**

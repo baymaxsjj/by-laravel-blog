@@ -52,7 +52,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     // 获取音乐列表
     Route::get('/music/list','MusicController@list');
     // 留言
-    Route::post('/message/tourist','MessageController@touristAdd')->middleware('throttle:5,1');
+    Route::post('/message/tourist','MessageController@touristAdd');
+    // ->middleware('throttle:10,1');
     //
     Route::post('/admin/pictures/add','ArticleController@pictures');
     // 登陆后操作
@@ -61,9 +62,9 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('/user/info','UserController@userinfo')->name('users.info');
         Route::get('/user/logout','UserController@logout')->name('users.logout');
         Route::post('/user/modify','UserController@modify')->name('users.modify');
-        Route::post('/message/add','MessageController@add')->middleware('throttle:10,1');
+        Route::post('/message/add','MessageController@add');
         // 评论
-        Route::post('user/reply/add','ReplyController@add')->middleware('throttle:10,1');
+        Route::post('user/reply/add','ReplyController@add');
          Route::post('user/message/remove','MessageController@user_remove');
         // 获取管理员信息
         Route::get('/user/info','AdminController@info');
