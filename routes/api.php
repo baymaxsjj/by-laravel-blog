@@ -29,6 +29,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::post('/user/forget','ValidateController@forget');
     // 获取友情链接
     Route::get('/link/list','LinkContorller@list')->name('users.link');
+    // 获取轮播
+    Route::get('/show/list','HomeContorller@list');
     // 获取留言
     Route::get('/message/list','MessageController@list')->name('users.message');
     // 获取评论 (id)
@@ -93,6 +95,12 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('admin/link/list','LinkContorller@index');
         Route::post('admin/link/update','LinkContorller@update');
         Route::post('admin/link/add','LinkContorller@add');
+
+        // 主页轮播模块
+        Route::post('admin/show/remove','HomeContorller@remove');
+        Route::post('admin/show/list','HomeContorller@index');
+        Route::post('admin/show/update','HomeContorller@update');
+        Route::post('admin/show/add','HomeContorller@add');
 
         // 成长路线模块
         Route::post('admin/route/remove','RouteController@remove');
