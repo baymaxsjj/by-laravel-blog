@@ -40,11 +40,11 @@ class RouteController extends Controller
         $list=Route::orderBy('data','desc')->get(['id','logo','data','content','category']);
         return $this->success($list);
     }
-    public function carousel(){
-        // $list=Route::where('carousel','1' )->orderBy('data','desc')->paginate(5);
-        $list=Route::where('is_carousel','1')->orderBy('data','desc')->paginate(5);
-        return $this->success($list);
-    }
+    // public function carousel(){
+    //     // $list=Route::where('carousel','1' )->orderBy('data','desc')->paginate(5);
+    //     $list=Route::where('is_carousel','1')->orderBy('data','desc')->paginate(5);
+    //     return $this->success($list);
+    // }
     public function list(){
         $list=Route::withTrashed()->orderBy('data','desc')->paginate(5);
         return $this->success($list);

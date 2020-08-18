@@ -31,14 +31,16 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/link/list','LinkContorller@list')->name('users.link');
     // 获取轮播
     Route::get('/show/list','HomeContorller@list');
+    // 获取公告
+    Route::get('/sysmess/list','SysMessContorller@list');
     // 获取留言
     Route::get('/message/list','MessageController@list')->name('users.message');
     // 获取评论 (id)
     Route::get('/reply/list','ReplyController@list')->name('users.reply');
     // 获取成长信息
     Route::get('/route/list','RouteController@userList')->name('users.route');
-    // 获取成长信息
-    Route::get('/route/carousel','RouteController@carousel');
+    // // 获取成长信息
+    // Route::get('/route/carousel','RouteController@carousel');
     // 获取文章列表
     Route::post('/blog/list','ArticleController@list')->name('users.articlelist');
     // 获取标签列表
@@ -101,6 +103,11 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('admin/show/list','HomeContorller@index');
         Route::post('admin/show/update','HomeContorller@update');
         Route::post('admin/show/add','HomeContorller@add');
+        //公告
+        Route::post('admin/sysmess/remove','SysMessContorller@remove');
+        Route::post('admin/sysmess/list','SysMessContorller@index');
+        Route::post('admin/sysmess/update','SysMessContorller@update');
+        Route::post('admin/sysmess/add','SysMessContorller@add');
 
         // 成长路线模块
         Route::post('admin/route/remove','RouteController@remove');
