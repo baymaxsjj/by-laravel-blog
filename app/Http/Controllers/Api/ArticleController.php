@@ -90,32 +90,31 @@ class ArticleController extends Controller
      * U    文章内容
      */
        public function content(ArticleRequest $request){
-          $id=$request->get('id');
-        $content=Article::findOrFail($id);
-         // 上一篇和下一篇文章
-         if ($content){
-             $label=Label::where('article_id',$id)->get()->toArray();
-             $content->label = array_values(array_unique(array_column($label, 'label')));
-              // 访问统计
-             $content->visits()->increment();
-              // visits($content)->increment();
-             $content->view_count = $content->visits()->count();
-             $prevId = Article::where('id', '<', $id)->max('id');
-             $nextId = Article::where('id', '>', $id)->min('id');
-             if(empty($prevId)){
-                 $id=Article::orderBy('id', 'desc')->first('id');
-                 $prevId =$id->id;
-             }
-             if(empty($nextId)){
-                 $id=Article::orderBy('id', 'asc')->first('id');
-                 $nextId =$id->id;
-             }
-             $content->prevArticle = Article::where('id', $prevId)->get(['id', 'title']);
-             $content->nextrAticle = Article::where('id', $nextId)->get(['id', 'title']);
-         } else {
+        $id=$request->get('id');
+        $content=Article::find($id);
+         if (empty($content)){
              return $this->failed('该文章已经下架');
          }
-        return $this->success( $content);
+         $label=Label::where('article_id',$id)->get()->toArray();
+         $content->label = array_values(array_unique(array_column($label, 'label')));
+          // 访问统计
+         $content->visits()->increment();
+          // visits($content)->increment();
+         $content->view_count = $content->visits()->count();
+         $prevId = Article::where('id', '<', $id)->max('id');
+         $nextId = Article::where('id', '>', $id)->min('id');
+         if(empty($prevId)){
+             $id=Article::orderBy('id', 'desc')->first('id');
+             $prevId =$id->id;
+         }
+         if(empty($nextId)){
+             $id=Article::orderBy('id', 'asc')->first('id');
+             $nextId =$id->id;
+         }
+         // 上一篇和下一篇文章
+         $content->prevArticle = Article::where('id', $prevId)->get(['id', 'title']);
+         $content->nextrAticle = Article::where('id', $nextId)->get(['id', 'title']);
+         return $this->success( $content);
     }
     /**
      * A   文章删除

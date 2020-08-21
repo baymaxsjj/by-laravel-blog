@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\Reply;
+use App\Models\Article;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Api\MessageRequest;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +20,15 @@ class MessageController extends Controller
         $message=new Message();
         // 是否是为文章留言
         $message->user_id=$userAuth->id;
+        $articles=Article::where('id',$request->get('article_id'))->first();
+        if(empty($articles)){
+           return $this->failed("文章不存在");
+        }
         $message->article_id=$request->get('article_id');
         $message->message=$request->get('message');
         $message->save();
         return $this->message("留言成功");
+
 
     }
     public function touristAdd(MessageRequest $request){
@@ -67,10 +73,15 @@ class MessageController extends Controller
 
     }
     public function list(MessageRequest $request){
+
         $id=$request->input('id');
         $arr=[];
-        if($request->input('id')>=0){
+        if($id>=0){
             $arr=['article_id'=>$id];
+            $articles=Article::where('id',$id)->first();
+            if(empty($articles)&&$id>0){
+               return $this->failed("留言不存在");
+            }
         }else{
             $userAuth = Auth::guard('api')->user();
             $arr=['user_id'=>$userAuth->id];
@@ -86,7 +97,7 @@ class MessageController extends Controller
         },
         ])->select(['id','user_id','tourist','qq','message','created_at'])
         ->orderBy('id','desc')
-        ->paginate(10);
+        ->paginate(20);
        // $user = $list->user;
        return $this->success( $list);
     }
