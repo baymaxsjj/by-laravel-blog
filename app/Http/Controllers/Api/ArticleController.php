@@ -34,6 +34,44 @@ class ArticleController extends Controller
     }
     public function update(ArticleRequest $request){
         $id=$request->input('id');
+        $labelArr=explode(",",$request->get('label'));
+        $lab=Label::where('article_id',$id)->get(['id','label']);
+         $count1=count($lab);
+         $count2=count($labelArr);
+         if($count1==$count2){
+             for($i=0;$i<$count1;$i++){
+                if($lab[$i]->label!=$labelArr[$i]){
+                    // 更新
+                    $article=Label::where('id',$lab[$i]->id)->update(['label'=>$labelArr[$i]]);
+                }
+             }
+         }else if($count1<$count2){
+            for($i=0;$i<$count1;$i++){
+               if($lab[$i]->label!=$labelArr[$i]){
+                   // 更新
+                   $article=Label::where('id',$lab[$i]->id)->update(['label'=>$labelArr[$i]]);
+               }
+            }
+            for($count1;$count1<$count2;$count1++){
+                $labels=DB::table('labels')->insert([
+                    'label'=>$labelArr[$count1],
+                    'article_id'=>$id
+                ]);
+            }
+         }else{
+            for($i=0;$i<$count1;$i++){
+                if($i<$count2){
+                    if($lab[$i]->label!=$labelArr[$i]){
+                        // 更新
+                        $article=Label::where('id',$lab[$i]->id)->update(['label'=>$labelArr[$i]]);
+                    }
+                }else{
+                    Label::withTrashed()->find($lab[$i]->id)->delete();
+                }
+
+            }
+         }
+
         unset($request['id']);
         unset($request['label']);
         $article=Article::where('id',$id)->update($request->all());
