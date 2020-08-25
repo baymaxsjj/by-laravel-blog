@@ -21,7 +21,7 @@ class MessageController extends Controller
         // 是否是为文章留言
         $message->user_id=$userAuth->id;
         $articles=Article::where('id',$request->get('article_id'))->first();
-        if(empty($articles)){
+        if(empty($articles)&&$request->get('article_id')!=0){
            return $this->failed("文章不存在");
         }
         $message->article_id=$request->get('article_id');
