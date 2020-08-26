@@ -10,7 +10,7 @@ class Article extends Model
     use SoftDeletes;
      // 接受的字段
     protected $fillable = [
-        'title', 'desc','content','img','classty','name','deleted_at','click','like','deleted_at'
+        'title', 'desc','content','img','classty','name','deleted_at','click','like','is_show','head_show','share_show','copyright_show','message_show','deleted_at'
     ];
     public function label(){
       return $this->hasMany('App\Models\Label','article_id','id');

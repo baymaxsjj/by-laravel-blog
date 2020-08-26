@@ -96,22 +96,22 @@ class ArticleController extends Controller
      *  U   文章列表
      */
     public function list(ArticleRequest $request){
-        $show=['id','title','desc','img','click','classty','like','deleted_at','created_at','updated_at'];
+        $show=['id','title','desc','img','click','classty','like','head_show','share_show','copyright_show','message_show','deleted_at','created_at','updated_at'];
         $type='';
         if($request->has('label')){
             $label=$request->input('label');
             $articles=Article::
             leftJoin('labels','articles.id','=','labels.article_id')
-            ->where('label',$label)
+            ->where(['label'=>$label,'is_show'=>1])
             ->withCount('message')
             ->paginate(6,['articles.id','articles.title','articles.desc','articles.img','articles.click','articles.classty','articles.like','articles.deleted_at','articles.created_at','articles.updated_at']);
         }else if($request->has('class')){
-            $articles = Article::where('classty','=',$request->input('class'))->withCount('message')->orderBy('created_at', 'desc')->paginate(6, $show);
+            $articles = Article::where(['classty'=>$request->input('class'),'is_show'=>1])->orderBy('created_at', 'desc')->paginate(6, $show);
         }else if($request->has('search')){
             $type=$request->get('search');
-            $articles=Article::where('title','like',"%$type%")->withCount('message')->orderBy('created_at', 'desc')->paginate(6, $show);
+            $articles=Article::where('title','like',"%$type%")->orderBy('created_at', 'desc')->paginate(6, $show);
         }else{
-            $articles = Article::withCount('message')->orderBy('created_at', 'desc')->paginate(6, $show);
+            $articles = Article::where(['is_show'=>1])->orderBy('created_at', 'desc')->paginate(6, $show);
         }
         foreach($articles as $item){
             $label=Label::where('article_id',$item->id)->get()->toArray();
