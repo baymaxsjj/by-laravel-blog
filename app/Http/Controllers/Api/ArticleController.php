@@ -104,14 +104,15 @@ class ArticleController extends Controller
             leftJoin('labels','articles.id','=','labels.article_id')
             ->where(['label'=>$label,'is_show'=>1])
             ->withCount('message')
+            ->orderBy('created_at', 'desc')
             ->paginate(6,['articles.id','articles.title','articles.desc','articles.img','articles.click','articles.classty','articles.like','articles.deleted_at','articles.created_at','articles.updated_at']);
         }else if($request->has('class')){
-            $articles = Article::where(['classty'=>$request->input('class'),'is_show'=>1])->orderBy('created_at', 'desc')->paginate(6, $show);
+            $articles = Article::where(['classty'=>$request->input('class'),'is_show'=>1])->withCount('message')->orderBy('created_at', 'desc')->paginate(6, $show);
         }else if($request->has('search')){
             $type=$request->get('search');
-            $articles=Article::where('title','like',"%$type%")->orderBy('created_at', 'desc')->paginate(6, $show);
+            $articles=Article::where('title','like',"%$type%")->withCount('message')->orderBy('created_at', 'desc')->paginate(6, $show);
         }else{
-            $articles = Article::where(['is_show'=>1])->orderBy('created_at', 'desc')->paginate(6, $show);
+            $articles = Article::where(['is_show'=>1])->withCount('message')->orderBy('created_at', 'desc')->paginate(6, $show);
         }
         foreach($articles as $item){
             $label=Label::where('article_id',$item->id)->get()->toArray();
