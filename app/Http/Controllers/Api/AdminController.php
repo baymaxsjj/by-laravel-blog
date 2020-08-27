@@ -46,7 +46,7 @@ class AdminController extends Controller
     public function info(){
         $userAuth = Auth::guard('api')->user();
         // 在数据库中查找用户信息$
-        $data=['id','name','phone','email','avatar_url','updated_at'];
+        $data=['id','name','phone','email','avatar_url','is_admin','updated_at'];
         $user = User::select($data)->find($userAuth->id);
         return $this->success($user);
     }

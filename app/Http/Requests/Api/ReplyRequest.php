@@ -21,6 +21,10 @@ class ReplyRequest extends FormRequest
                 return [
                     'id'=>['required']
                 ];
+            case '/api/v1/user/reply/remove':
+                return [
+                    'id'=>['required']
+                ];
             case '/api/v1/reply/list':
                 return [
                     'id'=>['required']

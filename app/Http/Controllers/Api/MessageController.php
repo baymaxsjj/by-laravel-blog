@@ -64,7 +64,7 @@ class MessageController extends Controller
         $message=Message::find($id);
          // return $this->message($message);
         $userAuth = Auth::guard('api')->user();
-        if($message->user_id==$userAuth->id){
+        if($message->user_id==$userAuth->id||$userAuth->is_admin==1){
              $boo=Message::find($id)->delete();
             return $this->message('留言删除成功！');
         }else{

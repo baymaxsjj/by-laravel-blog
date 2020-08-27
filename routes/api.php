@@ -69,7 +69,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('/message/add','MessageController@add');
         // 评论
         Route::post('user/reply/add','ReplyController@add');
-         Route::post('user/message/remove','MessageController@user_remove');
+        Route::post('user/message/remove','MessageController@user_remove');
+        Route::post('user/reply/remove','ReplyController@user_remove');
         // 获取管理员信息
         Route::get('/user/info','AdminController@info');
         // 修改管理信息

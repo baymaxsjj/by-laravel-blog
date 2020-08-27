@@ -51,6 +51,18 @@ class ReplyController extends Controller
         }
         // return $this->message($message->deleted_at);
     }
+    // 删除为0，
+    public function user_remove(ReplyRequest $request){
+        $id=$request->get('id');
+        $message=Reply::find($id);
+        $userAuth = Auth::guard('api')->user();
+        if($message->user_id==$userAuth->id||$userAuth->is_admin==1){
+            $boo=Reply::find($id)->delete();
+            return $this->message('回复删除成功！');
+        }else{
+            return $this->message('回复删除失败！');
+        }
+    }
     public function list(ReplyRequest $request){
         $id=$request->input('id');
         $list=DB::table('replies')
