@@ -4,7 +4,7 @@
 
 您正在修改密码，请在验证码输入框中输入：<span class="vali">{{ $data->captcha }} </span>,以完成操作。请在5分钟内验证。
 
-@component('mail::button', ['url' => ''])
+@component('mail::button', ['url' => 'https://www.yunmobai.cn/forget'])
 去验证
 @endcomponent
 

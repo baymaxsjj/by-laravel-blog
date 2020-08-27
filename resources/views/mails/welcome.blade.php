@@ -4,7 +4,7 @@
 
 感谢你加入{{ config('app.name') }}!<br/>
 因此我们可以给你发送重要的信息和更新，确认该邮箱地址无误<br/>
-@component('mail::button', ['url' => ''])
+@component('mail::button', ['url' => 'https://www.yunmobai.cn/login'])
 去登录
 @endcomponent
 
