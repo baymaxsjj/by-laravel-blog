@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
+    var $blog_name='https://www.yunmobai.cn/blog/';
     /**
      * A    添加文章
      */
@@ -30,7 +31,26 @@ class ArticleController extends Controller
                 ]);
             }
         }
-        return $this->message('文章发表成功');
+        $seo=$this->seo($article->id);
+
+        return $this->message('发表成功,'.$seo);
+    }
+    public function seo($id){
+        $urls = array(
+            $this->blog_name.$id,
+        );
+        $api = 'http://data.zz.baidu.com/urls?site=https://www.yunmobai.cn&token=1HTRX1xON0ljxUlU';
+        $ch = curl_init();
+        $options =  array(
+            CURLOPT_URL => $api,
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS => implode("\n", $urls),
+            CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+        );
+        curl_setopt_array($ch, $options);
+        $result = curl_exec($ch);
+        return $result;
     }
     public function update(ArticleRequest $request){
         $id=$request->input('id');
@@ -203,6 +223,7 @@ class ArticleController extends Controller
         $cont=Article::where('id',$id)->update(['click'=>$click->click+1]);
         return  $this->success($cont);
     }
+
     // 添加图片
     public function pictures(Request $request){
         header('Content-type: application/json');
