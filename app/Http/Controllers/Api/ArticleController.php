@@ -19,6 +19,8 @@ class ArticleController extends Controller
     public function add(ArticleRequest $request){
         $userAuth = Auth::guard('api')->user();
         // 在数据库中查找用户信息
+        $seo=$request->get('seo');
+        unset($request['seo']);
         $user = User::find($userAuth->id);
         $request['name']=$user->name;
         $article=Article::create($request->all());
@@ -31,8 +33,9 @@ class ArticleController extends Controller
                 ]);
             }
         }
-        $seo=$this->seo($article->id);
-
+        if($seo==1){
+            $seo=$this->seo($article->id);
+        }
         return $this->message('发表成功,'.$seo);
     }
     public function seo($id){
@@ -94,8 +97,14 @@ class ArticleController extends Controller
 
         unset($request['id']);
         unset($request['label']);
+        $seo='0';
+        if($request->get('seo')==1){
+            $seo=$this->seo($id);
+        }
+         unset($request['seo']);
         $article=Article::where('id',$id)->update($request->all());
-        return $this->message('文章修改成功');
+
+        return $this->message('文章修改成功'.$seo);
     }
     /**
      *  U   文章类别列表
