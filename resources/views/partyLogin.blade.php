@@ -68,7 +68,7 @@
 
 <script>
     window.onload = function () {
-        window.location.href = `http://localhost:8081/login?token={{ $token }}`
+        window.location.href = `https://www.yunmobai.cn/login?token={{ $token }}`
     }
 </script>
     </body>
