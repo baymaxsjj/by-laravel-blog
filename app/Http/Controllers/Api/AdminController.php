@@ -19,7 +19,8 @@ class AdminController extends Controller
         if($user->is_admin==1){
             $token=Auth::guard('api')->attempt(
                 [
-                    'name'=>$request->name,
+                    'login_type' => $request->type,
+                    'login_name'=>$request->name,
                     'password'=>$request->password
                 ]
             );
@@ -29,7 +30,7 @@ class AdminController extends Controller
                 // 返回当前用户
                 $userAuth = Auth::guard('api')->user();
                 // 在数据库中查找用户信息
-                $user = User::find($userAuth->id);
+                $user = User::find($userAuth->user_id);
                 //时间不对更改时区 在/config/app.php 'timezone' => 'Asia/Shanghai',更新登录时间
                 $user->update([$user->updated_at = time()]);
                 // 返回token
@@ -47,7 +48,7 @@ class AdminController extends Controller
         $userAuth = Auth::guard('api')->user();
         // 在数据库中查找用户信息$
         $data=['id','name','phone','email','avatar_url','is_admin','updated_at'];
-        $user = User::select($data)->find($userAuth->id);
+        $user = User::select($data)->find($userAuth->user_id);
         return $this->success($user);
     }
     /**
@@ -55,7 +56,7 @@ class AdminController extends Controller
      */
     public function update(UserRequest $request){
         $userAuth = Auth::guard('api')->user();
-        $user = DB::table('users')->where('id',$userAuth->id)->first();
+        $user = DB::table('users')->where('id',$userAuth->user_id)->first();
         if(Hash::check($request->get('password'),$user->password)){
             $pass=$request->get('pass');
             $info=$request->all();
@@ -65,7 +66,7 @@ class AdminController extends Controller
                 $info['password']=$info['pass'];
                 unset($info['pass']);
             }
-            $use = User::find($userAuth->id);
+            $use = User::find($userAuth->user_id);
             $use->update($info);
             return $this->message('修改成功');
         }else{

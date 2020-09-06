@@ -21,7 +21,7 @@ class ArticleController extends Controller
         // 在数据库中查找用户信息
         $seo=$request->get('seo');
         unset($request['seo']);
-        $user = User::find($userAuth->id);
+        $user = User::find($userAuth->user_id);
         $request['name']=$user->name;
         $article=Article::create($request->all());
         if($request->get('label')){

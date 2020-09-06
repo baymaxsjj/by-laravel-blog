@@ -5,8 +5,10 @@ use Mail;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
+use App\Models\UserAuth;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\Welcome;
+use Socialite;
 class UserController extends Controller
 {
 // 登录
@@ -16,7 +18,8 @@ class UserController extends Controller
     // 我们可以通过 Auth facade 来访问 Laravel 的认证服务，因此需要确认类的顶部引入了 Auth facade
     $token=Auth::guard('api')->attempt(
         [
-            'name'=>$request->name,
+            'login_type' => $request->type,
+            'login_name'=>$request->name,
             'password'=>$request->password
         ]
     );
@@ -42,22 +45,36 @@ class UserController extends Controller
   }
 //   注册
   public function sign(UserRequest $request){
-      $arr=explode('@',$request->get('email'));
-      if($arr[1]=='qq.com'){
-            $request['avatar_url']='http://q1.qlogo.cn/g?b=qq&nk='.$arr[0 ].'&s=100';
-      }else{
+        $arr=explode('@',$request->get('email'));
+        if($arr[1]=='qq.com'){
+            $request['avatar_url']='https://q1.qlogo.cn/g?b=qq&nk='.$arr[0 ].'&s=100';
+        }else{
            $request['avatar_url']="";
-      }
-    $user=User::create($request->all());
-    Mail::to($user)->send(new Welcome($user));
-    return $this->message("注册成功");
+        }
+        $user=User::create($request->all());
+        $emailIdentifier = [
+            'user_id' => $user->id,
+            'login_type' => 'email',
+            'login_name' => $request->email,
+            'password' => $request->password
+        ];
+        $nameIdentifier = [
+            'user_id' => $user->id,
+            'login_type' => 'name',
+            'login_name' => $request->name,
+            'password' => $request->password
+        ];
+        UserAuth::create($emailIdentifier);
+        UserAuth::create($nameIdentifier);
+        // Mail::to($user)->send(new Welcome($user));
+        return $this->message("注册成功");
   }
 // 获取个人信息 userInfo()
   public function userinfo(){
     //   返回当前用户
       $userAuth = Auth::guard('api')->user();
       // 在数据库中查找用户信息
-      $user = User::find($userAuth->id);
+      $user = User::find($userAuth->user_id);
       return $this->success($user);
   }
   public function modify(UserRequest $request){
@@ -74,9 +91,11 @@ class UserController extends Controller
         $user=User::withTrashed()->find($id);
         if(empty($user->deleted_at)){
             $boo=User::find($id)->delete();
+            UserAuth::where('user_id',$id)->delete();
             return $this->message('冻结成功');
         }else{
             $boo=User::withTrashed()->find($id)->restore();
+            $boo=UserAuth::withTrashed()->where('user_id',$id)->restore();
             return $this->message('解冻成功');
         }
   }
@@ -84,5 +103,58 @@ class UserController extends Controller
     public function list(){
         $users = User::withTrashed()->where('is_admin',0)->paginate(5);
         return $this->success($users);
+    }
+     /**
+     * 将用户重定向到party认证页面
+     *
+     * @return Response
+     */
+    public function giteeRedirectToProvider($party)
+    {
+        // dd($party);
+        return Socialite::driver($party)->redirect();
+    }
+
+    /**
+     * 从party获取用户信息.
+     *
+     * @return Response
+     */
+    public function giteeLogin($party)
+    {
+        $partyUser= Socialite::driver($party)->stateless()->user();
+        //  // 邮件存在则不创建，共享一个账号数据
+        $partyRandom="_".$party."_".\Str::random(6);
+        $user = [
+            'email' => $partyUser->email,
+            'name' => $partyUser->nickname.$partyRandom,
+            'avatar_url' => $partyUser->avatar,
+            'password' => bcrypt(\Str::random(16))
+        ];
+        $newUser = User::firstOrCreate(['email' => $user['email']], $user);
+
+        // 创建一条party账号
+        $partyIdentifier = [
+            'user_id' => $newUser->id,
+            'login_type' => $party,
+            'login_name' => $partyUser->id,
+            'password' => bcrypt(\Str::random(16))
+        ];
+        UserAuth::updateOrCreate([
+            'login_name' => $partyUser->id,
+            'login_type' => $party
+        ], $partyIdentifier);
+
+        // $token = Auth::guard('api')->tokenById($newUser->id);
+        $token=Auth::guard('api')->attempt(
+            [
+                'login_type' => $party,
+                'login_name' => $partyUser->id,
+                'password' => $partyIdentifier['password']
+            ]
+        );
+
+        return view('partyLogin')->with(['token' =>'bearer '.$token, 'url' => env('LOGIN_REDIRECT').'/login']);
+        // dd($user);
     }
 }

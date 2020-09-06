@@ -14,10 +14,12 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.0",
+        "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
         "medz/cors": "^1.4",
         "predis/predis": "^1.1",
         "qoraiche/laravel-mail-editor": "^2.0",
+        "socialiteproviders/gitee": "^3.0",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {

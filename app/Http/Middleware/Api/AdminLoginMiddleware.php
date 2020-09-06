@@ -27,7 +27,7 @@ class AdminLoginMiddleware  extends BaseMiddleware
             // return redirect('/');
             throw new UnauthorizedHttpException('jwt-auth', '未登录');
         }
-        $user=User::where('name', $userAuth->name)->first();
+        $user=User::find($userAuth->user_id);
         if($user->is_admin==1){
             $this->checkForToken($request);
             //         使用 try 包裹，以捕捉 token 过期所抛出的 TokenExpiredException  异常

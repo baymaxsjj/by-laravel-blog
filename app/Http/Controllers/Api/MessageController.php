@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Message;
 use App\Models\Reply;
 use App\Models\Article;
@@ -19,7 +20,7 @@ class MessageController extends Controller
         $content=$request->input('message');
         $message=new Message();
         // 是否是为文章留言
-        $message->user_id=$userAuth->id;
+        $message->user_id=$userAuth->user_id;
         $articles=Article::where('id',$request->get('article_id'))->first();
         if(empty($articles)&&$request->get('article_id')!=0){
            return $this->failed("文章不存在");
@@ -32,16 +33,17 @@ class MessageController extends Controller
 
     }
     public function touristAdd(MessageRequest $request){
-         $message=new Message();
-        $tourist=$request->get('tourist');
-        if($request->has('qq')){
-            $message->qq=$request->get('qq');
-        }
-        $message->tourist=$tourist;
-        $message->article_id=$request->get('article_id');
-        $message->message=$request->get('message');
-        $message->save();
-        return $this->message("留言成功");
+         return $this->failed("已关闭匿名留言！请登录",422);
+        //  $message=new Message();
+        // $tourist=$request->get('tourist');
+        // if($request->has('qq')){
+        //     $message->qq=$request->get('qq');
+        // }
+        // $message->tourist=$tourist;
+        // $message->article_id=$request->get('article_id');
+        // $message->message=$request->get('message');
+        // $message->save();
+        // return $this->message("留言成功");
 
     }
     // 留言删除
@@ -64,7 +66,8 @@ class MessageController extends Controller
         $message=Message::find($id);
          // return $this->message($message);
         $userAuth = Auth::guard('api')->user();
-        if($message->user_id==$userAuth->id||$userAuth->is_admin==1){
+        $user=User::find($userAuth->user_id);
+        if($message->user_id==$user->id||$user->is_admin==1){
              $boo=Message::find($id)->delete();
             return $this->message('留言删除成功！');
         }else{
@@ -84,7 +87,7 @@ class MessageController extends Controller
             }
         }else{
             $userAuth = Auth::guard('api')->user();
-            $arr=['user_id'=>$userAuth->id];
+            $arr=['user_id'=>$userAuth->user_id];
         }
         $list=Message::where($arr)->with(['user' => function($query) {
             $query->select(['id','name','avatar_url',"is_admin"])->get();

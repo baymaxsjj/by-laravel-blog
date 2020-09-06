@@ -25,12 +25,12 @@ class UserRequest extends FormRequest
                 ];
             case '/api/v1/login':
                 return [
-                    'name' => ['required', 'max:16', 'exists:users,name'],
+                    'name' => ['required', 'max:16', 'exists:user_auths,login_name'],
                     'password' => ['required', 'between:6,20'],
                 ];
             case '/api/v1/admin/login':
                 return [
-                    'name'=>['required','max:16','exists:users,name'],
+                    'name'=>['required','max:16','exists:user_auths,login_name'],
                     'password'=>['required','between:6,20']
                 ];
             case '/api/v1/admin/update':
