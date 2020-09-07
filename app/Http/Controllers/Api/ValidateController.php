@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Mail;
 use App\Mail\Validate;
 use App\Models\User;
+use App\Models\UserAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\EmailRequest;
@@ -43,8 +44,6 @@ class ValidateController extends Controller
             $user = User::whereEmail($request->email)->first();
             $RedisCap = Redis::get('captcha:'.$user['id']);
             $checkCount = Redis::get('checkCount:'.$user['id']);
-
-
             if (!$RedisCap)
                 return $this->failed('请先获取验证码', 200);
 
@@ -55,8 +54,16 @@ class ValidateController extends Controller
                 Redis::incr('checkCount:'.$user['id']);
                 return $this->failed('验证码不正确', 200);
             }
-
             $user->update(['password' => $request->password]);
+            $users=UserAuth::where(['user_id'=>$user->id])->where(function($query){
+                $query->where('login_type','name')
+                      ->orWhere(function($query){
+                          $query->where('login_type','email');
+                      });
+            })->get();
+            foreach($users as $item) {
+                $item->update(['password'=>$request->password]);
+            }
             Redis::del('captcha:'.$user['id']);
             return $this->message('新密码设置成功');
         }

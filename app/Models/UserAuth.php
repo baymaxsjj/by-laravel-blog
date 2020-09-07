@@ -22,12 +22,12 @@ class UserAuth extends Authenticatable implements JWTSubject
     }
     // 接受的字段
     protected $fillable = [
-        'user_id','login_type', 'login_name', 'password'
+        'user_id', 'login_type', 'login_name', 'password'
     ];
     protected $table= 'user_auths';
     // 表格隐藏的字段
     protected $hidden = [
-        'password',
+        'password'
     ];
     public $timestamps = false;
     protected $dates = ['deleted_at'];

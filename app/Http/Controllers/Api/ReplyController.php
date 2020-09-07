@@ -27,7 +27,7 @@ class ReplyController extends Controller
         // $userAuth->is_admin?
         $re=new Reply();
         $re->reply=$reply;
-        $re->user_id=$userAuth->id;
+        $re->user_id=$userAuth->user_id;
         $re->mess_id=$mess_id;
         $re->save();
         $mess='';
@@ -56,7 +56,8 @@ class ReplyController extends Controller
         $id=$request->get('id');
         $message=Reply::find($id);
         $userAuth = Auth::guard('api')->user();
-        if($message->user_id==$userAuth->id||$userAuth->is_admin==1){
+        $user=User::find($userAuth->user_id);
+        if($message->user_id==$user->id||$user->is_admin==1){
             $boo=Reply::find($id)->delete();
             return $this->message('回复删除成功！');
         }else{

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
+use App\Models\UserAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -56,18 +57,31 @@ class AdminController extends Controller
      */
     public function update(UserRequest $request){
         $userAuth = Auth::guard('api')->user();
-        $user = DB::table('users')->where('id',$userAuth->user_id)->first();
-        if(Hash::check($request->get('password'),$user->password)){
+        $user = User::find($userAuth->user_id);
+        if(Hash::check($request->get('password'),$userAuth->password)){
             $pass=$request->get('pass');
+            $name=$request->get('name');
             $info=$request->all();
+            // 没有修改密码
             if(is_null($pass)){
                 unset($info['password']);
             }else{
                 $info['password']=$info['pass'];
                 unset($info['pass']);
+                $users=UserAuth::where(['user_id'=>$user->id])->where(function($query){
+                    $query->where('login_type','name')
+                          ->orWhere(function($query){
+                              $query->where('login_type','email');
+                          });
+                })->get();
+                foreach($users as $item) {
+                    $item->update(['password'=>$pass]);
+                }
             }
-            $use = User::find($userAuth->user_id);
-            $use->update($info);
+            if(!is_null($name)){
+                UserAuth::where(['user_id'=>$user->id,'login_type'=>'name'])->update(['login_name'=>$name]);
+            }
+            $user->update($info);
             return $this->message('修改成功');
         }else{
             return $this->message('密码不正确');

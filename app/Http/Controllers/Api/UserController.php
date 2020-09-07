@@ -49,7 +49,7 @@ class UserController extends Controller
         if($arr[1]=='qq.com'){
             $request['avatar_url']='https://q1.qlogo.cn/g?b=qq&nk='.$arr[0 ].'&s=100';
         }else{
-           $request['avatar_url']="";
+           $request['avatar_url']="https://avatars.dicebear.com/v2/identicon/:seed.svg";
         }
         $user=User::create($request->all());
         $emailIdentifier = [
