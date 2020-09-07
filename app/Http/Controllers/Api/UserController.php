@@ -29,7 +29,7 @@ class UserController extends Controller
         // 返回当前用户
         $userAuth = Auth::guard('api')->user();
         // 在数据库中查找用户信息
-        $user = User::find($userAuth->id);
+        $user = User::find($userAuth->user_id);
         //时间不对更改时区 在/config/app.php 'timezone' => 'Asia/Shanghai',更新登录时间
         $user->update([$user->updated_at = time()]);
         // 返回token
@@ -111,7 +111,7 @@ class UserController extends Controller
      */
     public function redirectToProvider($party)
     {
-        // dd($party);
+        dd($party);
         return Socialite::driver($party)->redirect();
     }
 
