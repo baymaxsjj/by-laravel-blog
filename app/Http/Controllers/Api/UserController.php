@@ -111,7 +111,7 @@ class UserController extends Controller
      */
     public function redirectToProvider($party)
     {
-        dd($party);
+        // dd($party);
         return Socialite::driver($party)->redirect();
     }
 
