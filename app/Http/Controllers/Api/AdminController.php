@@ -72,7 +72,7 @@ class AdminController extends Controller
                     $query->where('login_type','name')
                           ->orWhere(function($query){
                               $query->where('login_type','email');
-                          });
+                    });
                 })->get();
                 foreach($users as $item) {
                     $item->update(['password'=>$pass]);

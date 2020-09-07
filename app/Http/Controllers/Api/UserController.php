@@ -109,7 +109,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function giteeRedirectToProvider($party)
+    public function redirectToProvider($party)
     {
         // dd($party);
         return Socialite::driver($party)->redirect();
@@ -120,7 +120,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function giteeLogin($party)
+    public function handleProviderCallback($party)
     {
         $partyUser= Socialite::driver($party)->stateless()->user();
         //  // 邮件存在则不创建，共享一个账号数据

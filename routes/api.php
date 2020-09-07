@@ -21,8 +21,8 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/blog/info','ArticleController@info');
     // 登录
     Route::post('/login','UserController@login')->name('users.login');
-    Route::get('/{party}','UserController@giteeRedirectToProvider');
-    Route::get('/{party}/login','UserController@giteeLogin');
+    Route::get('/login/{party}/redirect','UserController@redirectToProvider');
+    Route::get('/login/{party}/callback','UserController@handleProviderCallback');
     // 注册
     Route::post('/sign','UserController@sign');
     // 发送邮件
