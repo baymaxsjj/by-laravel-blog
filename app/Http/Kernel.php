@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
 		'cors'=> \Medz\Cors\Laravel\Middleware\ShouldGroup::class,
         'api.refresh'=>\App\Http\Middleware\Api\RefreshTokenMiddleware::class,
         'api.adminlogin'=>\App\Http\Middleware\Api\AdminLoginMiddleware::class,
+        'api.admin'=>\App\Http\Middleware\Api\AdminMiddleware::class,
     ];
 }

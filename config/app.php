@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         
         \SocialiteProviders\Manager\ServiceProvider::class, // add
+        JellyBool\Flysystem\Upyun\UpyunServiceProvider::class,
     ],
 
     /*

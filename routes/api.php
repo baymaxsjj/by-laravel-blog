@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
+    Route::get('/sitemap', 'SitemapController@sitemap');
     Route::get('/blog/info','ArticleController@info');
     // 登录
     Route::post('/login','UserController@login')->name('users.login');
@@ -78,10 +79,11 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         // 修改管理信息
         Route::post('/admin/update','AdminController@update');
     });
-
     // 管理员登录
-    Route::post('/admin/login','AdminController@login');
     Route::middleware('api.adminlogin')->group(function () {
+        Route::post('/admin/login','AdminController@login');
+    });
+    Route::middleware(['api.refresh','api.admin'])->group(function () {
         // // 获取管理员信息
         // Route::get('/admin/info','AdminController@info');
         // 用户列表可传 0，或1，

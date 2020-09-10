@@ -23,6 +23,10 @@ class EventServiceProvider extends ServiceProvider
                 // ... other providers
                 'SocialiteProviders\\Gitee\\GiteeExtendSocialite@handle',
         ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // ... other providers
+            'SocialiteProviders\\QQ\\QQExtendSocialite@handle',
+        ],
     ];
 
     /**
