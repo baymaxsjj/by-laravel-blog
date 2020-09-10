@@ -25,7 +25,6 @@ class SitemapController extends Controller
 	        }
 	        // 渲染站点地图(options: 'xml' (default), 'html', 'txt', 'ror-rss', 'ror-rdf')
 	        // return env('APP_URL');
-            //test
             return $sitemap_contents->render('xml');
 	    }
 }
