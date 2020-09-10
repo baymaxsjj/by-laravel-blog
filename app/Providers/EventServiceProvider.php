@@ -19,14 +19,14 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
          // 第三方登陆
-        SocialiteProviders\Manager\SocialiteWasCalled::class => [
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
                 // ... other providers
                 'SocialiteProviders\\Gitee\\GiteeExtendSocialite@handle',
         ],
-        SocialiteProviders\Manager\SocialiteWasCalled::class => [
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             // ... other providers
             'SocialiteProviders\\QQ\\QQExtendSocialite@handle',
-        ],
+        ]
     ];
 
     /**
