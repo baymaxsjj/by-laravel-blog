@@ -16,6 +16,8 @@ class MessageRequest extends FormRequest
                 return [
                     'message'=>['required','between:1,500'],
                     'article_id'=>['required'],
+                    'ip'=>['required'],
+                    'address'=>['required']
                 ];
             case '/api/v1/message/tourist':
                 return [
@@ -45,7 +47,9 @@ class MessageRequest extends FormRequest
             'article_id'=>'文章id不能为空',
             'id.require'=>'文章id不能为空',
             'tourist.between'=>'tourist应在1~10字之间',
-            'qq.between'=>'qq号应在3~11数之间'
+            'qq.between'=>'qq号应在3~11数之间',
+            'ip.require'=>'非法请求',
+            'address.require'=>'非法请求'
         ];
     }
 }

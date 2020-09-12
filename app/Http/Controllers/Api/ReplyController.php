@@ -29,6 +29,12 @@ class ReplyController extends Controller
         $re->reply=$reply;
         $re->user_id=$userAuth->user_id;
         $re->mess_id=$mess_id;
+        $re->ip=$request->get('ip');
+        $re->address=$request->get('address');
+        $re->address=$request->get('address');
+        if($request->has('mess_reply_id')){
+            $re->mess_reply_id=$request->get('mess_reply_id');
+        }
         $re->save();
         $mess='';
         if($mess_id==0){

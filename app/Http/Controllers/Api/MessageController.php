@@ -27,6 +27,8 @@ class MessageController extends Controller
         }
         $message->article_id=$request->get('article_id');
         $message->message=$request->get('message');
+        $message->ip=$request->get('ip');
+        $message->address=$request->get('address');
         $message->save();
         return $this->message("留言成功");
 
@@ -89,16 +91,27 @@ class MessageController extends Controller
             $userAuth = Auth::guard('api')->user();
             $arr=['user_id'=>$userAuth->user_id];
         }
-        $list=Message::where($arr)->with(['user' => function($query) {
+        $list=Message::where($arr)->with([
+        'user' => function($query) {
             $query->select(['id','name','avatar_url',"is_admin"])->get();
         },
         'reply' => function($query) {
            // $query->select(['mess_id','reply','created_at'])->get();
-            $query->with(['user' => function($query) {
-                $query->select(['id','name','avatar_url',"is_admin"])->get();
-            }])->select(['id','user_id','mess_id','reply','created_at'])->get();
+            $query->with([
+                'user' => function($query) {
+                    $query->select(['id','name','avatar_url',"is_admin"])->get();
+                },
+                'messReply' => function($query) {
+                    $query->with([
+                        'user' => function($query) {
+                            $query->select(['id','name'])->get();
+                        }
+                    ])->select(['id','user_id','reply'])->get();
+                    // $query->select(['id','reply','mess_reply_id'])->get();
+                }
+            ])->select(['id','user_id','mess_id','reply','mess_reply_id','address','created_at'])->get();
         },
-        ])->select(['id','user_id','tourist','qq','message','created_at'])
+        ])->select(['id','user_id','tourist','qq','message','address','created_at'])
         ->orderBy('id','desc')
         ->paginate(20);
        // $user = $list->user;

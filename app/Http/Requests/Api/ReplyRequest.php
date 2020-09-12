@@ -15,7 +15,9 @@ class ReplyRequest extends FormRequest
             case '/api/v1/user/reply/add':
                 return [
                     'reply'=>['required','between:1,200'],
-                    'mess_id'=>['required']
+                    'mess_id'=>['required'],
+                    'ip'=>['required'],
+                    'address'=>['required']
                 ];
             case '/api/v1/admin/reply/remove':
                 return [
@@ -40,7 +42,9 @@ class ReplyRequest extends FormRequest
             'reply.required'=>'回复内容不能为空',
             'reply.between'=>'回复应在1~200字之间',
             'mess_id.required'=>'回复者id不能为空',
-            'id.require'=>'文章id不能为空'
+            'id.require'=>'文章id不能为空',
+            'ip.require'=>'非法请求',
+            'address.require'=>'非法请求'
         ];
     }
 }

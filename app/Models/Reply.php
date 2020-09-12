@@ -8,11 +8,14 @@ class Reply extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'reply', 'mess_id','  ','created_at'
+        'reply', 'mess_id','mess_reply_id','ip','address','created_at'
     ];
 	// 反向关联
     public function user(){
       return $this->belongsTo('App\Models\User','user_id','id');
+    }
+    public function messReply(){
+      return $this->hasMany('App\Models\Reply','id','mess_reply_id');
     }
     protected $table= 'replies';
     protected $dates = ['deleted_at'];
