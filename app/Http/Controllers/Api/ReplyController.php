@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Reply;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Api\ReplyRequest;
 class ReplyController extends Controller
