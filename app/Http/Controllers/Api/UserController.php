@@ -40,8 +40,13 @@ class UserController extends Controller
   }
   //退出登录
   public function logout(){
-    Auth::guard('api')->logout();
-    return $this->message('退出登录成功');
+	if(Auth::guard('api')->user()){
+		Auth::guard('api')->logout();
+		return $this->message('退出登录成功！');
+	}else{
+		return $this->failed('未登录！',400);
+	}
+
   }
 //   注册
   public function sign(UserRequest $request){
@@ -131,8 +136,11 @@ class UserController extends Controller
             'avatar_url' => $partyUser->avatar,
             'password' => bcrypt(\Str::random(16))
         ];
+        $usrlogin=UserAuth::withTrashed()->where(['login_name' => $partyUser->id,'login_type' => $party])->first();
+        if(!empty($usrlogin->deleted_at)){
+            return '账户违规！禁止登录.若有问题请联系博主！';
+        }
         $newUser = User::firstOrCreate(['email' => $user['email']], $user);
-
         // 创建一条party账号
         $partyIdentifier = [
             'user_id' => $newUser->id,

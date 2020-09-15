@@ -37,7 +37,7 @@ class UserRequest extends FormRequest
                 return [
                     'name' => ['max:16','unique:users,name'],
                     'email' => ['unique:users,email'],
-                    'password' => ['required','between:6,20'],
+                    'password' => ['between:6,20'],
                     'pass' => ['between:6,20'],
                     'phone' => ['unique:users,phone'],
                     'avatar_url'=>[ 'between:3,100','url'],

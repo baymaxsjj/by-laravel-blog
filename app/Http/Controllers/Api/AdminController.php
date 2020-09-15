@@ -56,6 +56,16 @@ class AdminController extends Controller
      * U    用户信息更新
      */
     public function update(UserRequest $request){
+        if($request->has('type')){
+            if($request->has('name')){
+                $userAuth = Auth::guard('api')->user();
+                $user = User::find($userAuth->user_id);
+                $user->update(['name'=>$request->get('name')]);
+                return $this->message('名称修改成功');
+            }else{
+                return $this->message('名称不能为空');
+            }
+        }
         $userAuth = Auth::guard('api')->user();
         $user = User::find($userAuth->user_id);
         if(Hash::check($request->get('password'),$userAuth->password)){

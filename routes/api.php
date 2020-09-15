@@ -63,11 +63,12 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     // ->middleware('throttle:10,1');
     //
     Route::post('/admin/pictures/add','ArticleController@pictures');
+    //退出登录
+    Route::get('/user/logout','UserController@logout')->name('users.logout');
     // 登陆后操作
     Route::middleware('api.refresh')->group(function () {
         // 个人用户信息
         Route::post('/user/info','UserController@userinfo')->name('users.info');
-        Route::get('/user/logout','UserController@logout')->name('users.logout');
         Route::post('/user/modify','UserController@modify')->name('users.modify');
         Route::post('/message/add','MessageController@add');
         // 评论
