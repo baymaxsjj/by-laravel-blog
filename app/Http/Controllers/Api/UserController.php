@@ -5,6 +5,7 @@ use Mail;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
+use App\Models\UserAuth;
 use App\Models\Message;
 use App\Models\Reply;
 use Illuminate\Support\Facades\Auth;
