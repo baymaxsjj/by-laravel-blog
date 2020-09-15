@@ -5,7 +5,8 @@ use Mail;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
-use App\Models\UserAuth;
+use App\Models\Message;
+use App\Models\Reply;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\Welcome;
 use Socialite;
@@ -97,10 +98,14 @@ class UserController extends Controller
         if(empty($user->deleted_at)){
             $boo=User::find($id)->delete();
             UserAuth::where('user_id',$id)->delete();
+            Message::where('user_id',$id)->delete();
+            Reply::where('user_id',$id)->delete();
             return $this->message('冻结成功');
         }else{
-            $boo=User::withTrashed()->find($id)->restore();
-            $boo=UserAuth::withTrashed()->where('user_id',$id)->restore();
+            User::withTrashed()->find($id)->restore();
+            UserAuth::withTrashed()->where('user_id',$id)->restore();
+            Message::withTrashed()->where('user_id',$id)->restore();
+            Reply::withTrashed()->where('user_id',$id)->restore();
             return $this->message('解冻成功');
         }
   }
