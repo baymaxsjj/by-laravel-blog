@@ -134,18 +134,21 @@ class UserController extends Controller
     public function handleProviderCallback($party)
     {
         $partyUser= Socialite::driver($party)->stateless()->user();
-        //  // 邮件存在则不创建，共享一个账号数据
-        $partyRandom="_".$party."_".\Str::random(6);
-        $user = [
-            'email' => $partyUser->email,
-            'name' => $partyUser->nickname.$partyRandom,
-            'avatar_url' => $partyUser->avatar,
-            'password' => bcrypt(\Str::random(16))
-        ];
         $usrlogin=UserAuth::withTrashed()->where(['login_name' => $partyUser->id,'login_type' => $party])->first();
         if(!empty($usrlogin->deleted_at)){
             return '账户违规！禁止登录.若有问题请联系博主！';
         }
+        //  // 邮件存在则不创建，共享一个账号数据
+        $partyRandom="_".$party."_".\Str::random(4);
+        $pattern = '/^(http):\/\//i';
+        $replacement = 'https://';
+        $avatar= preg_replace($pattern, $replacement, $partyUser->avatar);
+        $user = [
+            'email' => $partyUser->email,
+            'name' => $partyUser->nickname.$partyRandom,
+            'avatar_url' => $avatar,
+            'password' => bcrypt(\Str::random(16))
+        ];
         $newUser = User::firstOrCreate(['email' => $user['email']], $user);
         // 创建一条party账号
         $partyIdentifier = [
