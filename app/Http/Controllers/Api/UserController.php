@@ -149,7 +149,23 @@ class UserController extends Controller
             'avatar_url' => $avatar,
             'password' => bcrypt(\Str::random(16))
         ];
-        $newUser = User::firstOrCreate(['email' => $user['email']], $user);
+        $isUser=User::where(['email' => $user['email']])->first();
+        $newUser='';
+        // 判断邮箱是否为空
+        if(empty($isUser->email)){
+            //判断该账号是否存在
+            $auth=UserAuth::where(['login_type' => $party,'login_name' => $partyUser->id])->first();
+            if(empty($auth)){
+                //不存在就创建
+                $newUser = User::create($user);
+            }else{
+                //存在就返回个人信息
+                $newUser=User:find($auth->user_id);
+            }
+        }else{
+            //不为空，就合并账号
+            $newUser = User::firstOrCreate(['email' => $user['email']], $user);
+        }
         // 创建一条party账号
         $partyIdentifier = [
             'user_id' => $newUser->id,
