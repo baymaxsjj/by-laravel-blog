@@ -160,7 +160,7 @@ class UserController extends Controller
                 $newUser = User::create($user);
             }else{
                 //存在就返回个人信息
-                $newUser=User:find($auth->user_id);
+                $newUser=User::find($auth->user_id);
             }
         }else{
             //不为空，就合并账号
