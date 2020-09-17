@@ -10,7 +10,14 @@ class SitemapController extends Controller
 {
     //
 	 public function sitemap () {
-
+             $urls= [
+                    '/',
+                    '/blog',
+                    '/message',
+                    '/route',
+                    '/link',
+                    '/login'
+                    ];
 	        // 创建一个生成站点地图的对象
 	        $sitemap_contents = App::make("sitemap");
 	        // 设置缓存
@@ -23,6 +30,12 @@ class SitemapController extends Controller
 	            $url = env('APP_URL').'/blog/'.$blog->id;
 	            $sitemap_contents->add($url, $blog->updated_at,'1.0','daily');
 	        }
+            $dateTime = date('Y-m-d H:i:s');
+            foreach ($urls as $url)
+            {
+                $url = env('APP_URL').$url;
+                $sitemap_contents->add($url, $dateTime,'1.0','daily');
+            }
 	        // 渲染站点地图(options: 'xml' (default), 'html', 'txt', 'ror-rss', 'ror-rdf')
 	        // return env('APP_URL');
             return $sitemap_contents->render('xml');
