@@ -36,7 +36,8 @@ class ArticleController extends Controller
         if($seo==1){
             $seo=$this->seo($article->id);
         }
-        return $this->message('发表成功,'.$seo);
+        $succ=["message"=>"发表成功",'id'=>$article->id,'seo'=>$seo];
+        return $this->success($succ);
     }
     public function seo($id){
         $urls = array(
@@ -54,6 +55,12 @@ class ArticleController extends Controller
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
         return $result;
+    }
+    public function channels(ArticleRequest $request){
+        $id=$request->input('id');
+        $channels=$request->input('channels');
+        $article=Article::where('id',$id)->update(['channels'=>$channels]);
+        return $this->message('添加成功');
     }
     public function update(ArticleRequest $request){
         $id=$request->input('id');
@@ -103,8 +110,8 @@ class ArticleController extends Controller
         }
          unset($request['seo']);
         $article=Article::where('id',$id)->update($request->all());
-
-        return $this->message('文章修改成功'.$seo);
+        $succ=["message"=>"发表成功",'id'=>$id,'seo'=>$seo];
+        return $this->success($succ);
     }
     /**
      *  U   文章类别列表

@@ -95,6 +95,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
 
         // 文章修改
         Route::post('/admin/article/update','ArticleController@update');
+        Route::post('/admin/article/channels','ArticleController@channels');
         Route::post('/admin/article/remove','ArticleController@remove');
         // 获取文章列表
         Route::post('/admin/blog/list','ArticleController@alist');

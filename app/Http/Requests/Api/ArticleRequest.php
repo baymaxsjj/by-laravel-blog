@@ -17,6 +17,11 @@ class ArticleRequest extends FormRequest
                     'desc'=>['required'],
                     'content'=>['required']
                 ];
+            case '/api/v1/admin/article/channels':
+                return [
+                    'id'=>['required'],
+                    'channels'=>['required'],
+                ];
             case '/api/v1/admin/article/update':
                 return [
                     'id'=>['required'],

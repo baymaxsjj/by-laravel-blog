@@ -61,6 +61,7 @@ class AdminController extends Controller
                 $userAuth = Auth::guard('api')->user();
                 $user = User::find($userAuth->user_id);
                 $user->update(['name'=>$request->get('name')]);
+                UserAuth::where(['user_id'=>$user->id,'login_type'=>'name'])->update(['login_name'=>$request->get('name')]);
                 return $this->message('名称修改成功');
             }else{
                 return $this->message('名称不能为空');
