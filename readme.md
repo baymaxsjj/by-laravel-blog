@@ -7,6 +7,7 @@
 网站前端源码：[https://gitee.com/baymaxsjj/by-vue-blog](https://gitee.com/baymaxsjj/by-vue-blog)
 
 网站后端源码：[https://gitee.com/baymaxsjj/by-laravel-blog](https://gitee.com/baymaxsjj/by-laravel-blog)
+
 此项目使用的第三方图床，并配置多个图床，可自定义选择，也可使用又拍云(自行添加)等
 
 <table>
