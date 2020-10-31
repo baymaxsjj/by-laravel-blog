@@ -29,8 +29,8 @@ class MusicController extends Controller
        }
     }
     public function update(MusicRequest $request){
-        $id=$request->input('music_id');
-        $music=Music::where('music_id',$id)->first();
+        $id=$request->input('id');
+        $music=Music::find($id);
         $boo=$music->update($request->all());
         if(!$boo){
             return $this->message('修改失败');
