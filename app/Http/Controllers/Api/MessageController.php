@@ -30,7 +30,10 @@ class MessageController extends Controller
         $message->ip=$request->get('ip');
         $message->address=$request->get('address');
         $message->save();
-        return $this->message("留言成功");
+        $message->reply=[];
+        // 在数据库中查找用户信息
+        $message->user= User::find($userAuth->user_id);
+        return $this->success($message);
 
 
     }

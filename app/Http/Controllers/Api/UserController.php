@@ -44,11 +44,8 @@ class UserController extends Controller
   public function logout(){
 	if(Auth::guard('api')->user()){
 		Auth::guard('api')->logout();
-		return $this->message('退出登录成功！');
-	}else{
-		return $this->failed('未登录！',400);
-	}
-
+	}		
+    return $this->message('退出登录成功！');
   }
 //   注册
   public function sign(UserRequest $request){
