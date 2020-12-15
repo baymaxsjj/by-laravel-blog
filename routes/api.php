@@ -21,15 +21,15 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/sitemap', 'SitemapController@sitemap');
     Route::get('/blog/info','ArticleController@info');
     // 登录
-    Route::post('/login','UserController@login')->name('users.login');
+    // Route::post('/login','UserController@login')->name('users.login');
     Route::get('/login/{party}/redirect','UserController@redirectToProvider');
     Route::get('/login/{party}/callback','UserController@handleProviderCallback');
     // 注册
-    Route::post('/sign','UserController@sign');
+    // Route::post('/sign','UserController@sign');
     // 发送邮件
-    Route::post('/sendEmail','ValidateController@send_email');
+    // Route::post('/sendEmail','ValidateController@send_email');
     // 忘记密码
-    Route::post('/user/forget','ValidateController@forget');
+    // Route::post('/user/forget','ValidateController@forget');
     // 获取友情链接
     Route::get('/link/list','LinkContorller@list')->name('users.link');
     // 获取轮播
