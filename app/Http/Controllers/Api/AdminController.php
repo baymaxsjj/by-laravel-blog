@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
+use App\Models\Message;
+use App\Models\Article;
 use App\Models\UserAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +53,17 @@ class AdminController extends Controller
         $data=['id','name','phone','email','avatar_url','is_admin','updated_at'];
         $user = User::select($data)->find($userAuth->user_id);
         return $this->success($user);
+    }
+    public function getBlogInfo(){
+        $article=Article::count();
+        $user=User::count();
+        $message=Message::count();
+        $browse=visits('App\Models\Article')->count();
+        $info=array($article,
+            $user,
+            $message,
+            $browse);
+        return $this->success($info);
     }
     /**
      * U    用户信息更新
