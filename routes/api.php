@@ -67,7 +67,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/user/logout','UserController@logout')->name('users.logout');
     // 登陆后操作
     Route::middleware('api.refresh')->group(function () {
-        Route::get('/blog/info','AdminController@getBlogInfo');
+        Route::get('/admin/blog/info','AdminController@getBlogInfo');
         // 个人用户信息
         Route::post('/user/info','UserController@userinfo')->name('users.info');
         Route::post('/user/modify','UserController@modify')->name('users.modify');
