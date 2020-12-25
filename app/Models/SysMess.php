@@ -9,7 +9,7 @@ class SysMess extends Model
     //
     use SoftDeletes;
     protected $fillable = [
-        'id', 'title','content'
+        'id', 'title','content','logo','type','updated_at'
     ];
     protected $table= 'sysmess';
     protected $dates = ['deleted_at'];

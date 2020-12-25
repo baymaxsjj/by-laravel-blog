@@ -20,9 +20,13 @@ class SysMessContorller extends Controller
         // return $this->success($request->input('apply'));
     }
     public function list(Request $request){
-        $show=['id','title','content'];
-        $SysMesss=SysMess::orderBy('id','desc')->first($show);
-        return $this->success($SysMesss);
+        $show=['id','title','content','logo','type','updated_at'];
+        $list=[];
+        $type1=SysMess::where('type',1)->orderBy('id','desc')->first($show);
+        $type0=SysMess::where('type',0)->orderBy('id','desc')->first($show);
+        array_push($list,$type0);
+        array_push($list,$type1);
+        return $this->success($list);
     }
 
     //user 申请添加友情链接
