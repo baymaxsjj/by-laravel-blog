@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
 use App\Models\Message;
+use App\Models\Reply;
 use App\Models\Article;
 use App\Models\UserAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 class AdminController extends Controller
 {
     /**
@@ -59,10 +61,45 @@ class AdminController extends Controller
         $user=User::count();
         $message=Message::count();
         $browse=visits('App\Models\Article')->count();
-        $info=array($article,
-            $user,
-            $message,
-            $browse);
+        $messageStatis=Message::where('created_at','<', Carbon::now())->where('created_at','>', Carbon::today()->subDays(7))->select(
+             DB::raw("COUNT(id) AS num"),
+             DB::raw("DATE_FORMAT(created_at,'%Y/%m/%d') AS date")
+        )
+        ->groupBy('date')
+        ->orderBy('date')
+        ->get();
+        $replyStatis=Reply::where('created_at','<', Carbon::now())->where('created_at','>', Carbon::today()->subDays(7))->select(
+             DB::raw("COUNT(id) AS num"),
+             DB::raw("DATE_FORMAT(created_at,'%Y/%m/%d') AS date")
+        )
+        ->groupBy('date')
+        ->orderBy('date')
+        ->get();
+        $userStatis=User::where('created_at','<', Carbon::now())->where('created_at','>', Carbon::today()->subDays(7))->select(
+             DB::raw("COUNT(id) AS num"),
+             DB::raw("DATE_FORMAT(created_at,'%Y/%m/%d') AS date")
+        )
+        ->groupBy('date')
+        ->orderBy('date')
+        ->get();
+        $articleStatis=Article::where('created_at','<', Carbon::now())->where('created_at','>', Carbon::today()->subDays(7))->select(
+             DB::raw("COUNT(id) AS num"),
+             DB::raw("DATE_FORMAT(created_at,'%Y/%m/%d') AS date")
+        )
+        ->groupBy('date')
+        ->orderBy('date')
+        ->get();
+		$info=array('quantity'=>[
+			"article"=>$article,
+			"user"=>$user,
+			"message"=>$message,
+			"browse"=>$browse
+		],'statistics'=>[
+            "article"=>$articleStatis,
+            "message"=>$messageStatis,
+            "user"=>$userStatis,
+            "reply"=>$replyStatis
+         ]);
         return $this->success($info);
     }
     /**
