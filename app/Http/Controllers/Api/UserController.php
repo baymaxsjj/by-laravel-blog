@@ -184,7 +184,7 @@ class UserController extends Controller
             ]
         );
 
-        return view('partyLogin')->with(['token' =>'bearer '.$token,'loginTime'=>$usrlogin->updated_at,'url' => env('LOGIN_REDIRECT').'/login']);
+        return view('partyLogin')->with(['token' =>'bearer '.$token,'time'=>$usrlogin->updated_at,'url' => env('LOGIN_REDIRECT').'/login']);
         // dd($user);
     }
 }
