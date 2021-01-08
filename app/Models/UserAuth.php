@@ -29,7 +29,6 @@ class UserAuth extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password'
     ];
-    public $timestamps = false;
     protected $dates = ['deleted_at'];
     //将密码进行加密
     public function setPasswordAttribute($value)
