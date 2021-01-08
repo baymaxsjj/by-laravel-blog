@@ -111,7 +111,7 @@
 
 <script>
     window.onload = function () {
-        window.location.href = `https://www.yunmobai.cn/login?token={{ $token }}`
+        window.location.href = `https://www.yunmobai.cn/login?token={{ $token }}&time={{loginTime}}`
     }
 </script>
     </body>

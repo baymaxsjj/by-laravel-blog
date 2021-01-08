@@ -44,7 +44,7 @@ class UserController extends Controller
   public function logout(){
 	if(Auth::guard('api')->user()){
 		Auth::guard('api')->logout();
-	}		
+	}
     return $this->message('退出登录成功！');
   }
 //   注册
@@ -135,6 +135,7 @@ class UserController extends Controller
         if(!empty($usrlogin->deleted_at)){
             return '账户违规！禁止登录.若有问题请联系博主！';
         }
+        $loginTime=$usrlogin->updated_at;
         //  // 邮件存在则不创建，共享一个账号数据
         $partyRandom="_".$party."_".\Str::random(4);
         $pattern = '/^(http):\/\//i';
@@ -184,7 +185,7 @@ class UserController extends Controller
             ]
         );
 
-        return view('partyLogin')->with(['token' =>'bearer '.$token, 'url' => env('LOGIN_REDIRECT').'/login']);
+        return view('partyLogin')->with(['token' =>'bearer '.$token,'loginTime'=>$loginTime, 'url' => env('LOGIN_REDIRECT').'/login']);
         // dd($user);
     }
 }
