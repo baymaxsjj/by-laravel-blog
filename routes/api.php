@@ -67,7 +67,6 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/user/logout','UserController@logout')->name('users.logout');
     // 登陆后操作
     Route::middleware('api.refresh')->group(function () {
-        Route::get('/admin/blog/info','AdminController@getBlogInfo');
         // 个人用户信息
         Route::post('/user/info','UserController@userinfo')->name('users.info');
         Route::post('/user/modify','UserController@modify')->name('users.modify');
@@ -86,6 +85,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::post('/admin/login','AdminController@login');
     });
     Route::middleware(['api.refresh','api.admin'])->group(function () {
+        Route::get('/admin/blog/info','AdminController@getBlogInfo');
         // // 获取管理员信息
         // Route::get('/admin/info','AdminController@info');
         // 用户列表可传 0，或1，
