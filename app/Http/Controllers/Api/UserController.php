@@ -170,7 +170,7 @@ class UserController extends Controller
             'login_name' => $partyUser->id,
             'password' => bcrypt(\Str::random(16))
         ];
-        UserAuth::updateOrCreate([
+        $userUp=UserAuth::updateOrCreate([
             'login_name' => $partyUser->id,
             'login_type' => $party
         ], $partyIdentifier);
@@ -184,7 +184,7 @@ class UserController extends Controller
             ]
         );
 
-        return view('partyLogin')->with(['token' =>'bearer '.$token,'time'=>$usrlogin->updated_at,'url' => env('LOGIN_REDIRECT').'/login']);
+        return view('partyLogin')->with(['token' =>'bearer '.$token,'time'=>$userUp->updated_at,'url' => env('LOGIN_REDIRECT').'/login']);
         // dd($user);
     }
 }
